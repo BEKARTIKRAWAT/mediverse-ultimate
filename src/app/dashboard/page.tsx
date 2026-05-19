@@ -3,40 +3,18 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { 
   Activity, Pill, Calendar, MessageCircle, TrendingUp, LogOut, User,
   Sparkles, Bell, ChevronRight, Settings, AlertTriangle, Hospital,
   Trophy, Camera, Newspaper, Phone, Dumbbell, Brain, Smile, Heart, 
   Shield, Zap, Mail, Stethoscope, FileText, Video, Apple, Lightbulb,
-  IdCard, Footprints, Moon, Droplet, BookOpen, Download, Clock, QrCode
+  IdCard, Footprints, Moon, Droplet, BookOpen, Download, Clock, X
 } from "lucide-react";
 import VoiceAssistant from "@/components/voice/VoiceAssistant";
 import FloatingActionMenu from "@/components/shared/FloatingActionMenu";
 import UnifiedHealthSummary from "@/components/health/UnifiedHealthSummary";
 import StepCounter from "@/components/health/StepCounter";
 import AIHealthInsights from "@/components/dashboard/AIHealthInsights";
-
-// Animated Counter Component
-const AnimatedCounter = ({ value }: { value: number }) => {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    const duration = 1000;
-    const step = Math.ceil(value / (duration / 16));
-    let current = 0;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= value) {
-        setCount(value);
-        clearInterval(timer);
-      } else {
-        setCount(current);
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [value]);
-  return <span>{count}</span>;
-};
 
 export default function MainDashboard() {
   const { user, logout, isLoading } = useAuth();
@@ -88,7 +66,6 @@ export default function MainDashboard() {
   if (!user) return null;
 
   const features = [
-    { title: "Medical QR", desc: "Emergency scan code", icon: QrCode, href: "/medical-qr", color: "from-blue-500 to-cyan-600" },
     { title: "Live Monitor", desc: "Real‑time steps & heart rate", icon: Activity, href: "/live-monitor", color: "from-blue-500 to-cyan-600" },
     { title: "AI Symptom Checker", desc: "Advanced AI analysis", icon: Brain, href: "/ai-symptom-checker", color: "from-purple-500 to-pink-600" },
     { title: "Med Reminder", desc: "Push notifications", icon: Clock, href: "/med-reminder", color: "from-orange-500 to-red-600" },
@@ -122,109 +99,103 @@ export default function MainDashboard() {
     { title: "Barcode Scanner", desc: "Scan meds", icon: Camera, href: "/barcode-scanner", color: "from-purple-500 to-pink-600" },
     { title: "Health News", desc: "Latest updates", icon: Newspaper, href: "/health-news", color: "from-blue-500 to-cyan-600" },
     { title: "Emergency Contacts", desc: "Store & alert", icon: Phone, href: "/emergency-contacts", color: "from-red-500 to-orange-600" },
+    { title: "SOS Emergency", desc: "One‑tap alert", icon: AlertTriangle, href: "/sos", color: "from-red-500 to-pink-600" },
     { title: "Drug Interaction", desc: "Check safety", icon: Pill, href: "/drug-interaction", color: "from-indigo-500 to-purple-600" },
     { title: "Nearby Hospitals", desc: "Find facilities", icon: Hospital, href: "/nearby-hospitals", color: "from-teal-500 to-cyan-600" },
     { title: "Health Streaks", desc: "Achievements", icon: Trophy, href: "/streaks", color: "from-amber-500 to-orange-600" }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <>
       {/* SOS Modal */}
-      <AnimatePresence>
-        {sosOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
-              <div className="flex justify-between items-center mb-4"><h2 className="text-2xl font-bold text-red-600 flex items-center gap-2"><AlertTriangle /> Emergency SOS</h2><button onClick={() => setSosOpen(false)}><X size={24} /></button></div>
-              <p className="text-gray-700 mb-4">Tap below to call emergency services or view your emergency contacts.</p>
-              <a href="tel:112" className="block w-full bg-red-600 text-white text-center py-3 rounded-xl font-bold text-lg mb-3 hover:bg-red-700 transition">🚨 Call Emergency (112)</a>
-              <Link href="/emergency-contacts" className="block w-full bg-blue-600 text-white text-center py-3 rounded-xl font-medium hover:bg-blue-700 transition" onClick={() => setSosOpen(false)}>📞 My Emergency Contacts</Link>
-              <p className="text-xs text-gray-400 text-center mt-4">For non‑emergencies, use the app normally.</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {sosOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-red-600 flex items-center gap-2"><AlertTriangle /> Emergency SOS</h2>
+              <button onClick={() => setSosOpen(false)}><X size={24} /></button>
+            </div>
+            <p className="text-gray-700 mb-4">Tap below to call emergency services or view your emergency contacts.</p>
+            <a href="tel:112" className="block w-full bg-red-600 text-white text-center py-3 rounded-xl font-bold text-lg mb-3 hover:bg-red-700 transition">🚨 Call Emergency (112)</a>
+            <Link href="/emergency-contacts" className="block w-full bg-blue-600 text-white text-center py-3 rounded-xl font-medium hover:bg-blue-700 transition" onClick={() => setSosOpen(false)}>📞 My Emergency Contacts</Link>
+            <p className="text-xs text-gray-400 text-center mt-4">For non‑emergencies, use the app normally.</p>
+          </div>
+        </div>
+      )}
 
       {/* Floating SOS Button */}
-      <motion.button
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+      <button
         onClick={() => setSosOpen(true)}
-        className="fixed bottom-6 right-6 z-50 bg-red-600 text-white p-4 rounded-full shadow-2xl hover:bg-red-700 transition"
+        className="fixed bottom-6 right-6 z-50 bg-red-600 text-white p-4 rounded-full shadow-2xl hover:bg-red-700 transition animate-pulse"
       >
         <AlertTriangle size={28} />
-      </motion.button>
+      </button>
 
-      {/* Glass Header */}
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-wrap justify-between items-center gap-4">
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
-                {greeting}, {user.name.split(" ")[0]}! 👋
-              </h1>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Your complete health hub</p>
-            </motion.div>
-            <div className="flex gap-3">
-              <Link href="/profile" className="p-2 rounded-full bg-white shadow-sm border hover:shadow-md transition"><User size={20} className="text-blue-600" /></Link>
-              <Link href="/settings" className="p-2 rounded-full bg-white shadow-sm border hover:shadow-md transition"><Settings size={20} className="text-gray-600" /></Link>
-              <button onClick={logout} className="p-2 rounded-full bg-red-50 hover:bg-red-100 transition"><LogOut size={20} className="text-red-600" /></button>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/70 border-b border-gray-200/50 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-wrap justify-between items-center gap-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
+                  {greeting}, {user.name.split(" ")[0]}! 👋
+                </h1>
+                <p className="text-gray-500 text-sm">Your complete health hub</p>
+              </div>
+              <div className="flex gap-3">
+                <Link href="/profile" className="p-2 rounded-full bg-white shadow-sm border hover:shadow-md transition"><User size={20} className="text-blue-600" /></Link>
+                <Link href="/settings" className="p-2 rounded-full bg-white shadow-sm border hover:shadow-md transition"><Settings size={20} className="text-gray-600" /></Link>
+                <button onClick={logout} className="p-2 rounded-full bg-red-50 hover:bg-red-100 transition"><LogOut size={20} className="text-red-600" /></button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {weather && (
-          <motion.div initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mb-6 p-4 rounded-2xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-2">
-            <span>🌡️ <strong>{weather.temp}°C</strong> – {weather.tip}</span>
-          </motion.div>
-        )}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {weather && (
+            <div className="mb-6 p-4 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/30 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-2">
+              <span>🌡️ <strong>{weather.temp}°C</strong> – {weather.tip}</span>
+            </div>
+          )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <UnifiedHealthSummary userId={user.id} />
-          <div className="space-y-6">
-            <StepCounter />
-            <AIHealthInsights userId={user.id} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <UnifiedHealthSummary userId={user.id} />
+            <div className="space-y-6">
+              <StepCounter />
+              <AIHealthInsights userId={user.id} />
+            </div>
           </div>
-        </div>
 
-        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border p-4 flex items-center justify-between hover:shadow-md transition"><div><p className="text-gray-500 text-sm">Medications</p><p className="text-2xl font-bold"><AnimatedCounter value={stats.meds} /></p></div><Pill className="w-8 h-8 text-green-500" /></div>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border p-4 flex items-center justify-between hover:shadow-md transition"><div><p className="text-gray-500 text-sm">Appointments</p><p className="text-2xl font-bold"><AnimatedCounter value={stats.apts} /></p></div><Calendar className="w-8 h-8 text-orange-500" /></div>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border p-4 flex items-center justify-between hover:shadow-md transition"><div><p className="text-gray-500 text-sm">Health Records</p><p className="text-2xl font-bold"><AnimatedCounter value={stats.health} /></p></div><Activity className="w-8 h-8 text-blue-500" /></div>
-          <div className="bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/30 dark:to-teal-900/30 rounded-2xl border border-green-100 p-4 flex items-center justify-between"><div><p className="text-gray-600 text-sm">Adherence</p><p className="text-2xl font-bold text-green-700"><AnimatedCounter value={adherenceScore} />%</p></div><div className="w-12 h-12 rounded-full border-4 border-green-400 flex items-center justify-center text-green-700 font-bold text-lg">{adherenceScore}%</div></div>
-        </motion.div>
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-2xl shadow-sm border p-4 flex items-center justify-between"><div><p className="text-gray-500 text-sm">Medications</p><p className="text-2xl font-bold">{stats.meds}</p></div><Pill className="w-8 h-8 text-green-500" /></div>
+            <div className="bg-white rounded-2xl shadow-sm border p-4 flex items-center justify-between"><div><p className="text-gray-500 text-sm">Appointments</p><p className="text-2xl font-bold">{stats.apts}</p></div><Calendar className="w-8 h-8 text-orange-500" /></div>
+            <div className="bg-white rounded-2xl shadow-sm border p-4 flex items-center justify-between"><div><p className="text-gray-500 text-sm">Health Records</p><p className="text-2xl font-bold">{stats.health}</p></div><Activity className="w-8 h-8 text-blue-500" /></div>
+            <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl border border-green-100 p-4 flex items-center justify-between"><div><p className="text-gray-600 text-sm">Adherence</p><p className="text-2xl font-bold text-green-700">{adherenceScore}%</p></div><div className="w-12 h-12 rounded-full border-4 border-green-400 flex items-center justify-center text-green-700 font-bold text-lg">{adherenceScore}%</div></div>
+          </div>
 
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2"><Sparkles size={20} /> Explore Premium Features</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {features.map((f, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.01 }}>
-                <Link href={f.href} className="group">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-3 hover:shadow-md transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"><Sparkles size={20} /> Explore Premium Features</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {features.map((f, i) => (
+                <Link key={i} href={f.href} className="group">
+                  <div className="bg-white rounded-xl border border-gray-100 p-3 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                     <div className={`w-9 h-9 rounded-xl bg-gradient-to-r ${f.color} flex items-center justify-center mb-2`}>
                       <f.icon className="w-4 h-4 text-white" />
                     </div>
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-xs sm:text-sm">{f.title}</h3>
+                    <h3 className="font-semibold text-gray-800 text-xs sm:text-sm">{f.title}</h3>
                     <p className="text-gray-400 text-xs mt-0.5 hidden sm:block">{f.desc}</p>
                   </div>
                 </Link>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <p className="text-center text-xs text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-6 mt-8">
-          🔒 Your data is private and stored locally. Your health, your control.
-        </p>
-      </main>
-
+          <p className="text-center text-xs text-gray-400 border-t border-gray-200 pt-6 mt-8">
+            🔒 Your data is private and stored locally. Your health, your control.
+          </p>
+        </main>
+      </div>
       <FloatingActionMenu />
       <VoiceAssistant />
-    </div>
+    </>
   );
 }
-
-
