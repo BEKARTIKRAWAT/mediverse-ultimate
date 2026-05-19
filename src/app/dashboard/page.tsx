@@ -66,10 +66,10 @@ export default function MainDashboard() {
     setStats({ meds: meds.length, apts: apts.length, health: health.length });
     
     let total = 0, taken = 0;
-    meds.forEach((m) => {
+    meds.forEach((m: any) => {
       m.times?.forEach(() => total++);
       const today = new Date().toISOString().split("T")[0];
-      if (m.taken?.some((t) => t.date === today && t.taken)) taken++;
+      if (m.taken?.some((t: any) => t.date === today && t.taken)) taken++;
     });
     setAdherenceScore(total ? Math.round((taken / total) * 100) : 100);
   }, [user]);
@@ -226,3 +226,5 @@ export default function MainDashboard() {
     </div>
   );
 }
+
+
