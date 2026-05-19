@@ -24,10 +24,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
   useEffect(() => {
-    const saved = localStorage.getItem("mediverse_settings");
+    const savedRaw = localStorage.getItem("mediverse_settings"); const saved = savedRaw ? JSON.parse(savedRaw) : null;
     if (saved) setSettings({ ...defaultSettings, ...JSON.parse(saved) });
     // Apply dark mode class
-    if (saved?.darkMode) document.documentElement.classList.add("dark");
+    if (saved && JSON.parse(saved).darkMode) document.documentElement.classList.add("dark");
   }, []);
 
   const updateSettings = (newSettings: Partial<Settings>) => {
@@ -46,3 +46,4 @@ export function useSettings() {
   if (!context) throw new Error("useSettings must be used within SettingsProvider");
   return context;
 }
+
