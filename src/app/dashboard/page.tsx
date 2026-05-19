@@ -175,7 +175,7 @@ export default function MainDashboard() {
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"><Sparkles size={20} /> Explore Premium Features</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {features.map((f, i) => (
+              {features.map((f: any, i: any) => (
                 <Link key={i} href={f.href} className="group">
                   <div className="bg-white rounded-xl border border-gray-100 p-3 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                     <div className={`w-9 h-9 rounded-xl bg-gradient-to-r ${f.color} flex items-center justify-center mb-2`}>
@@ -199,4 +199,5 @@ export default function MainDashboard() {
     </>
   );
 }
+
 

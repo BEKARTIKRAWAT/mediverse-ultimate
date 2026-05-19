@@ -29,3 +29,4 @@ export default function MedicationTracker() {
       <div className="space-y-4">{meds.map(m=><div key={m.id} className="bg-white rounded-xl shadow-md p-4"><div className="flex justify-between"><div><h3 className="font-bold">{m.name}</h3><p className="text-sm text-gray-600">{m.dosage}</p></div><button onClick={()=>deleteMed(m.id)} className="text-red-500"><Trash2 size={18}/></button></div><div className="mt-2"><p className="text-sm font-medium">Today's doses:</p><div className="flex gap-2 mt-1">{m.times.map((t:string)=>{ const taken = m.taken.some((tk:any)=>tk.date===new Date().toISOString().split("T")[0] && tk.time===t); return <button key={t} onClick={()=>toggleTaken(m.id,t)} className={`px-3 py-1 rounded-full text-sm flex items-center gap-1 ${taken ? 'bg-green-100 text-green-700' : 'bg-gray-100'}`}>{taken ? <CheckCircle size={14}/> : <Clock size={14}/>}{t}</button>;})}</div></div></div>)}</div></div></div>
   );
 }
+

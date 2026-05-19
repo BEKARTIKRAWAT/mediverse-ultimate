@@ -95,7 +95,7 @@ export default function AIRiskDashboard() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {risks.map((risk) => (
+              {risks.map((risk: any) => (
                 <div key={risk.condition} className={`rounded-xl p-5 border ${getRiskColor(risk.risk)} bg-white shadow-sm`}>
                   <div className="flex justify-between items-start">
                     <h3 className="text-xl font-bold text-gray-800">{risk.condition}</h3>
@@ -145,3 +145,4 @@ export default function AIRiskDashboard() {
     </div>
   );
 }
+

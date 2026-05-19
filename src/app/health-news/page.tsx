@@ -87,7 +87,7 @@ export default function HealthNewsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article, idx) => (
+              {articles.map((article: any, idx: any) => (
                 <div key={idx} className="group bg-white border border-gray-200 rounded-xl hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col hover:-translate-y-1">
                   <div className="p-5 flex-1">
                     <h3 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition line-clamp-2">
@@ -124,3 +124,4 @@ export default function HealthNewsPage() {
     </div>
   );
 }
+

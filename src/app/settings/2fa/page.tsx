@@ -92,7 +92,7 @@ export default function TwoFASetup() {
             <div className="bg-yellow-50 p-4 rounded-xl mb-4">
               <p className="font-semibold">Save these backup codes (one‑time use)</p>
               <div className="grid grid-cols-2 gap-2 my-2">
-                {backupCodes.map((code, i) => <code key={i} className="bg-white p-1 rounded text-center">{code}</code>)}
+                {backupCodes.map((code: any, i: any) => <code key={i} className="bg-white p-1 rounded text-center">{code}</code>)}
               </div>
               <button onClick={copyBackupCodes} className="text-blue-600 text-sm flex items-center gap-1"><Copy size={14} /> Copy codes</button>
               <p className="text-xs text-gray-500 mt-2">Store these somewhere safe. You can use them to log in if you lose your authenticator.</p>
@@ -104,3 +104,4 @@ export default function TwoFASetup() {
     </div>
   );
 }
+

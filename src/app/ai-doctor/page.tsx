@@ -54,7 +54,7 @@ Provide personalized, empathetic medical advice. Never diagnose but give helpful
         <div className="text-center mb-6"><Stethoscope className="w-12 h-12 text-blue-600 mx-auto" /><h1 className="text-3xl font-bold text-gray-800">AI Doctor Consultation</h1><p className="text-gray-500">Personalized medical advice using your health data</p></div>
         <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
           <div className="h-[500px] overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.map((msg, idx) => (
+            {messages.map((msg: any, idx: any) => (
               <div key={idx} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center"><Bot className="w-4 h-4 text-blue-600" /></div>}
                 <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${msg.role === "user" ? "bg-blue-600 text-white" : "bg-white border text-gray-800"}`}>
@@ -74,3 +74,4 @@ Provide personalized, empathetic medical advice. Never diagnose but give helpful
     </div>
   );
 }
+

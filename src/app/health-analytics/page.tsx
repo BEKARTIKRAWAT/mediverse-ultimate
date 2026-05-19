@@ -28,3 +28,4 @@ export default function HealthAnalytics() {
     </div></div>
   );
 }
+

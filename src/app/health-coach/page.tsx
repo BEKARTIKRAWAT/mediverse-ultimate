@@ -80,7 +80,7 @@ export default function HealthCoachPage() {
           </div>
           {loading ? <div className="flex justify-center py-10"><Loader2 className="animate-spin w-8 h-8 text-blue-500" /></div> : (
             <div className="space-y-3">
-              {advice.map((tip, idx) => (
+              {advice.map((tip: any, idx: any) => (
                 <div key={idx} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
                   <div className="w-2 h-2 rounded-full bg-teal-500 mt-2"></div>
                   <p className="text-gray-700">{tip}</p>
@@ -94,3 +94,4 @@ export default function HealthCoachPage() {
     </div>
   );
 }
+
