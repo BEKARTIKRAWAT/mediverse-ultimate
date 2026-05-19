@@ -11,12 +11,12 @@ export default function BPTracker() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_bp_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_bp_${user?.id}`);
     if (saved) setReadings(JSON.parse(saved));
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_bp_${user.id}`, JSON.stringify(readings));
+    if (user) localStorage.setItem(`mediverse_bp_${user?.id}`, JSON.stringify(readings));
   }, [readings, user]);
 
   const addReading = () => {
@@ -39,5 +39,6 @@ export default function BPTracker() {
     </div>
   );
 }
+
 
 

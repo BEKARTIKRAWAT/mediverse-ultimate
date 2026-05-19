@@ -44,7 +44,7 @@ export default function AIChatPage() {
 
   useEffect(() => {
     if (user) {
-      const saved = localStorage.getItem(`mediverse_chat_${user.id}`);
+      const saved = localStorage.getItem(`mediverse_chat_${user?.id}`);
       if (saved) {
         const parsed = JSON.parse(saved);
         const sanitized = parsed.map((msg: any, idx: number) => ({ ...msg, id: idx + 1 }));
@@ -57,7 +57,7 @@ export default function AIChatPage() {
   }, [user]);
 
   useEffect(() => {
-    if (user && messages.length) localStorage.setItem(`mediverse_chat_${user.id}`, JSON.stringify(messages));
+    if (user && messages.length) localStorage.setItem(`mediverse_chat_${user?.id}`, JSON.stringify(messages));
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, user]);
 
@@ -233,5 +233,6 @@ export default function AIChatPage() {
     </div>
   );
 }
+
 
 

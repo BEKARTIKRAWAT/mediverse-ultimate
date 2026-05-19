@@ -22,9 +22,9 @@ export default function AIRiskDashboard() {
     if (!user) return;
     const analyzeHealth = async () => {
       setLoading(true);
-      const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
-      const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
-      const mood = JSON.parse(localStorage.getItem(`mediverse_mood_${user.id}`) || "[]");
+      const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user?.id}`) || "[]");
+      const health = JSON.parse(localStorage.getItem(`mediverse_health_${user?.id}`) || "[]");
+      const mood = JSON.parse(localStorage.getItem(`mediverse_mood_${user?.id}`) || "[]");
       
       const hasHypertension = meds.some((m: any) => m.name.toLowerCase().includes("lisinopril") || m.name.toLowerCase().includes("amlodipine"));
       const hasDiabetes = meds.some((m: any) => m.name.toLowerCase().includes("metformin") || m.name.toLowerCase().includes("insulin"));
@@ -145,5 +145,6 @@ export default function AIRiskDashboard() {
     </div>
   );
 }
+
 
 

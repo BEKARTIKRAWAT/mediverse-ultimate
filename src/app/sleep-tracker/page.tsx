@@ -11,12 +11,12 @@ export default function SleepTracker() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_sleep_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_sleep_${user?.id}`);
     if (saved) setEntries(JSON.parse(saved));
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_sleep_${user.id}`, JSON.stringify(entries));
+    if (user) localStorage.setItem(`mediverse_sleep_${user?.id}`, JSON.stringify(entries));
   }, [entries, user]);
 
   const addEntry = () => {
@@ -40,5 +40,6 @@ export default function SleepTracker() {
     </div>
   );
 }
+
 
 

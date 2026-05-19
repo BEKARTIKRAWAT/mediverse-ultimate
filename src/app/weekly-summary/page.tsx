@@ -10,9 +10,9 @@ export default function WeeklySummary() {
 
   useEffect(() => {
     if (!user) return;
-    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
-    const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user.id}`) || "[]");
-    const mood = JSON.parse(localStorage.getItem(`mediverse_mood_${user.id}`) || "[]");
+    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user?.id}`) || "[]");
+    const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user?.id}`) || "[]");
+    const mood = JSON.parse(localStorage.getItem(`mediverse_mood_${user?.id}`) || "[]");
     const lastWeekMeds = meds.length;
     const lastVital = vitals.slice(-1)[0];
     const recentMood = mood.slice(-3).filter(m => m.mood === "happy").length;
@@ -45,5 +45,6 @@ export default function WeeklySummary() {
     </div>
   );
 }
+
 
 

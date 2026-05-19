@@ -7,9 +7,9 @@ export default function DataExport() {
 
   const exportCSV = () => {
     if (!user) return;
-    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
-    const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user.id}`) || "[]");
-    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
+    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user?.id}`) || "[]");
+    const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user?.id}`) || "[]");
+    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user?.id}`) || "[]");
     let csv = "Type,Name,Value,Date\n";
     meds.forEach((m: any) => csv += `Medication,${m.name},${m.dosage || ""},${m.startDate || ""}\n`);
     vitals.forEach((v: any) => csv += `Vital,${v.type},${v.value},${v.date}\n`);
@@ -18,7 +18,7 @@ export default function DataExport() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `mediverse_data_${user.id}.csv`;
+    a.download = `mediverse_data_${user?.id}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -37,6 +37,7 @@ export default function DataExport() {
     </div>
   );
 }
+
 
 
 

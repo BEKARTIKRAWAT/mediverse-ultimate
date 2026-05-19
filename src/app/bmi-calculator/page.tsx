@@ -12,12 +12,12 @@ export default function BMICalculator() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_bmi_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_bmi_${user?.id}`);
     if (saved) setHistory(JSON.parse(saved));
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_bmi_${user.id}`, JSON.stringify(history));
+    if (user) localStorage.setItem(`mediverse_bmi_${user?.id}`, JSON.stringify(history));
   }, [history, user]);
 
   const calculate = () => {
@@ -49,5 +49,6 @@ export default function BMICalculator() {
     </div>
   );
 }
+
 
 

@@ -13,9 +13,9 @@ export default function AIDoctorPage() {
   useEffect(() => {
     if (!user) return;
     // Load user's health data for context
-    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
-    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
-    const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user.id}`) || "[]");
+    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user?.id}`) || "[]");
+    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user?.id}`) || "[]");
+    const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user?.id}`) || "[]");
     const contextStr = `User health profile:
 - Medications: ${meds.map((m:any)=>m.name).join(", ") || "None"}
 - Latest vitals: ${vitals.slice(-1)[0]?.type || "None"} ${vitals.slice(-1)[0]?.value || ""}
@@ -74,5 +74,6 @@ Provide personalized, empathetic medical advice. Never diagnose but give helpful
     </div>
   );
 }
+
 
 

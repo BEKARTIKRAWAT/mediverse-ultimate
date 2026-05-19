@@ -18,13 +18,13 @@ export default function MedicationReminder() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_reminders_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_reminders_${user?.id}`);
     if (saved) setReminders(JSON.parse(saved));
     if ("Notification" in window && Notification.permission === "default") Notification.requestPermission();
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_reminders_${user.id}`, JSON.stringify(reminders));
+    if (user) localStorage.setItem(`mediverse_reminders_${user?.id}`, JSON.stringify(reminders));
     // Set up periodic check (every minute)
     const interval = setInterval(() => {
       const now = new Date();
@@ -63,5 +63,6 @@ export default function MedicationReminder() {
     </div>
   );
 }
+
 
 

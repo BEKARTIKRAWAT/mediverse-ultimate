@@ -10,12 +10,12 @@ export default function HealthJournal() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_journal_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_journal_${user?.id}`);
     if (saved) setEntries(JSON.parse(saved));
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_journal_${user.id}`, JSON.stringify(entries));
+    if (user) localStorage.setItem(`mediverse_journal_${user?.id}`, JSON.stringify(entries));
   }, [entries, user]);
 
   const addEntry = () => {
@@ -37,5 +37,6 @@ export default function HealthJournal() {
     </div>
   );
 }
+
 
 

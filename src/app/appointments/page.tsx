@@ -9,8 +9,8 @@ export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ doctorName: "", specialty: "", date: "", time: "", location: "", phone: "", notes: "" });
 
-  useEffect(() => { if (user) { const saved = localStorage.getItem(`mediverse_appointments_${user.id}`); if (saved) setAppointments(JSON.parse(saved)); } }, [user]);
-  useEffect(() => { if (user) localStorage.setItem(`mediverse_appointments_${user.id}`, JSON.stringify(appointments)); }, [appointments, user]);
+  useEffect(() => { if (user) { const saved = localStorage.getItem(`mediverse_appointments_${user?.id}`); if (saved) setAppointments(JSON.parse(saved)); } }, [user]);
+  useEffect(() => { if (user) localStorage.setItem(`mediverse_appointments_${user?.id}`, JSON.stringify(appointments)); }, [appointments, user]);
 
   const saveAppointment = () => { if (!form.doctorName || !form.date || !form.time) return; setAppointments([...appointments, { id: Date.now().toString(), ...form }]); setForm({ doctorName: "", specialty: "", date: "", time: "", location: "", phone: "", notes: "" }); setShowForm(false); };
   const deleteAppointment = (id: string) => setAppointments(appointments.filter(a => a.id !== id));
@@ -25,5 +25,6 @@ export default function Appointments() {
       <div className="space-y-3">{appointments.map(a=><div key={a.id} className="bg-white rounded-xl shadow-md p-4"><div className="flex justify-between"><div><h3 className="font-bold">{a.doctorName}</h3><p className="text-sm text-gray-600">{a.specialty}</p></div><button onClick={()=>deleteAppointment(a.id)} className="text-red-500"><Trash2 size={18}/></button></div><div className="grid grid-cols-2 gap-2 mt-2 text-sm text-gray-600"><div className="flex items-center gap-1"><Calendar size={14}/> {a.date}</div><div className="flex items-center gap-1"><Clock size={14}/> {a.time}</div>{a.location && <div className="flex items-center gap-1 col-span-2"><MapPin size={14}/> {a.location}</div>}{a.phone && <div className="flex items-center gap-1 col-span-2"><Phone size={14}/> {a.phone}</div>}</div></div>)}</div></div></div>
   );
 }
+
 
 

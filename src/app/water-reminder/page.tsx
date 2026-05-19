@@ -10,12 +10,12 @@ export default function WaterReminder() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_water_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_water_${user?.id}`);
     if (saved) setLogs(JSON.parse(saved));
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_water_${user.id}`, JSON.stringify(logs));
+    if (user) localStorage.setItem(`mediverse_water_${user?.id}`, JSON.stringify(logs));
   }, [logs, user]);
 
   const addLog = () => {
@@ -39,5 +39,6 @@ export default function WaterReminder() {
     </div>
   );
 }
+
 
 

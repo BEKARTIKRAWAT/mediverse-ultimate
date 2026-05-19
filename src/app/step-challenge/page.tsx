@@ -10,16 +10,16 @@ export default function StepChallenge() {
 
   useEffect(() => {
     if (!user) return;
-    const savedGoal = localStorage.getItem(`mediverse_stepgoal_${user.id}`);
+    const savedGoal = localStorage.getItem(`mediverse_stepgoal_${user?.id}`);
     if (savedGoal) setGoal(parseInt(savedGoal));
-    const steps = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
+    const steps = JSON.parse(localStorage.getItem(`mediverse_health_${user?.id}`) || "[]");
     const today = new Date().toISOString().split("T")[0];
     const todayEntry = steps.find(s => s.type === "steps" && s.date === today);
     if (todayEntry) setTodaySteps(todayEntry.value);
   }, [user]);
 
   const updateGoal = () => {
-    localStorage.setItem(`mediverse_stepgoal_${user.id}`, goal.toString());
+    localStorage.setItem(`mediverse_stepgoal_${user?.id}`, goal.toString());
     alert("Goal updated!");
   };
 
@@ -41,5 +41,6 @@ export default function StepChallenge() {
     </div>
   );
 }
+
 
 

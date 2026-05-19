@@ -12,7 +12,7 @@ export default function HealthPredictorPro() {
 
   useEffect(() => {
     if (!user) return;
-    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
+    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user?.id}`) || "[]");
     const steps = health.filter((h: any) => h.type === "steps").sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const sleep = health.filter((h: any) => h.type === "sleep").sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const weight = health.filter((h: any) => h.type === "weight").sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -99,3 +99,4 @@ export default function HealthPredictorPro() {
     </div>
   );
 }
+

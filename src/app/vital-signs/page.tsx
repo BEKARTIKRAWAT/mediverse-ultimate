@@ -20,12 +20,12 @@ export default function VitalSignsPage() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_vitals_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_vitals_${user?.id}`);
     if (saved) setVitals(JSON.parse(saved));
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_vitals_${user.id}`, JSON.stringify(vitals));
+    if (user) localStorage.setItem(`mediverse_vitals_${user?.id}`, JSON.stringify(vitals));
   }, [vitals, user]);
 
   const addVital = () => {
@@ -57,6 +57,7 @@ export default function VitalSignsPage() {
     </div>
   );
 }
+
 
 
 

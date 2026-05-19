@@ -9,12 +9,12 @@ export default function MedicalID() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_medicalid_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_medicalid_${user?.id}`);
     if (saved) setInfo(JSON.parse(saved));
   }, [user]);
 
   const saveInfo = () => {
-    if (user) localStorage.setItem(`mediverse_medicalid_${user.id}`, JSON.stringify(info));
+    if (user) localStorage.setItem(`mediverse_medicalid_${user?.id}`, JSON.stringify(info));
     alert("Medical ID saved!");
   };
 
@@ -30,5 +30,6 @@ export default function MedicalID() {
     </div>
   );
 }
+
 
 

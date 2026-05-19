@@ -19,7 +19,7 @@ export default function RefillTracker() {
 
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_refills_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_refills_${user?.id}`);
     if (saved) setItems(JSON.parse(saved));
     else {
       const demo = [
@@ -27,12 +27,12 @@ export default function RefillTracker() {
         { id: "2", name: "Metformin", refillDate: "2026-06-01", dosage: "500mg" },
       ];
       setItems(demo);
-      localStorage.setItem(`mediverse_refills_${user.id}`, JSON.stringify(demo));
+      localStorage.setItem(`mediverse_refills_${user?.id}`, JSON.stringify(demo));
     }
   }, [user]);
 
   useEffect(() => {
-    if (user) localStorage.setItem(`mediverse_refills_${user.id}`, JSON.stringify(items));
+    if (user) localStorage.setItem(`mediverse_refills_${user?.id}`, JSON.stringify(items));
   }, [items, user]);
 
   const addItem = () => {
@@ -104,5 +104,6 @@ export default function RefillTracker() {
     </div>
   );
 }
+
 
 

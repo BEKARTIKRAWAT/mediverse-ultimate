@@ -8,7 +8,7 @@ export default function StreaksPage() {
   const [streaks, setStreaks] = useState({ login: 0, steps: 0, medication: 0 });
   useEffect(() => {
     if (!user) return;
-    const saved = localStorage.getItem(`mediverse_streaks_${user.id}`);
+    const saved = localStorage.getItem(`mediverse_streaks_${user?.id}`);
     if (saved) setStreaks(JSON.parse(saved));
     else setStreaks({ login: 1, steps: 0, medication: 0 });
   }, [user]);
@@ -29,5 +29,6 @@ export default function StreaksPage() {
     </div>
   );
 }
+
 
 

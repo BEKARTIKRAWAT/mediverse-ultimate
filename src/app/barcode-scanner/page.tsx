@@ -42,9 +42,9 @@ export default function BarcodeScannerPage() {
 
   const addToMedications = () => {
     if (!result || !user) return;
-    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
+    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user?.id}`) || "[]");
     meds.push({ id: Date.now().toString(), name: result.name, dosage: result.dosage || "Unknown", times: ["09:00"], taken: [] });
-    localStorage.setItem(`mediverse_meds_${user.id}`, JSON.stringify(meds));
+    localStorage.setItem(`mediverse_meds_${user?.id}`, JSON.stringify(meds));
     alert(`Added ${result.name} to your medications!`);
     setResult(null);
   };
@@ -84,5 +84,6 @@ export default function BarcodeScannerPage() {
     </div>
   );
 }
+
 
 

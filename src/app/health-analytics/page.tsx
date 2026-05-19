@@ -9,8 +9,8 @@ export default function HealthAnalytics() {
   const [showForm, setShowForm] = useState(false);
   const [newMetric, setNewMetric] = useState({ type: "weight", value: "", date: new Date().toISOString().split("T")[0] });
 
-  useEffect(() => { if (user) { const saved = localStorage.getItem(`mediverse_health_${user.id}`); if (saved) setMetrics(JSON.parse(saved)); } }, [user]);
-  useEffect(() => { if (user) localStorage.setItem(`mediverse_health_${user.id}`, JSON.stringify(metrics)); }, [metrics, user]);
+  useEffect(() => { if (user) { const saved = localStorage.getItem(`mediverse_health_${user?.id}`); if (saved) setMetrics(JSON.parse(saved)); } }, [user]);
+  useEffect(() => { if (user) localStorage.setItem(`mediverse_health_${user?.id}`, JSON.stringify(metrics)); }, [metrics, user]);
 
   const addMetric = () => { if (!newMetric.value) return; setMetrics([...metrics, { id: Date.now().toString(), ...newMetric, value: parseFloat(newMetric.value) }]); setNewMetric({ type: "weight", value: "", date: new Date().toISOString().split("T")[0] }); setShowForm(false); };
   const latestWeight = metrics.filter(m => m.type === "weight").sort((a,b)=>new Date(b.date).getTime()-new Date(a.date).getTime())[0];
@@ -28,5 +28,6 @@ export default function HealthAnalytics() {
     </div></div>
   );
 }
+
 
 

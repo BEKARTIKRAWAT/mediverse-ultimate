@@ -38,9 +38,9 @@ export default function MainDashboard() {
 
   useEffect(() => {
     if (!user) return;
-    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
-    const apts = JSON.parse(localStorage.getItem(`mediverse_appointments_${user.id}`) || "[]");
-    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
+    const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user?.id}`) || "[]");
+    const apts = JSON.parse(localStorage.getItem(`mediverse_appointments_${user?.id}`) || "[]");
+    const health = JSON.parse(localStorage.getItem(`mediverse_health_${user?.id}`) || "[]");
     setStats({ meds: meds.length, apts: apts.length, health: health.length });
     
     let total = 0, taken = 0;
@@ -158,10 +158,10 @@ export default function MainDashboard() {
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <UnifiedHealthSummary userId={user.id} />
+            <UnifiedHealthSummary userId={user?.id} />
             <div className="space-y-6">
               <StepCounter />
-              <AIHealthInsights userId={user.id} />
+              <AIHealthInsights userId={user?.id} />
             </div>
           </div>
 
@@ -199,6 +199,7 @@ export default function MainDashboard() {
     </>
   );
 }
+
 
 
 
