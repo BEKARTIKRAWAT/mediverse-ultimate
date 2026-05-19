@@ -18,9 +18,9 @@ export default function HealthCoachPage() {
     const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
     const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
     const mood = JSON.parse(localStorage.getItem(`mediverse_mood_${user.id}`) || "[]");
-    const steps = health.filter(h => h.type === "steps").slice(-7).reduce((a,b) => a + b.value, 0) / (health.filter(h => h.type === "steps").length || 1);
-    const sleep = health.filter(h => h.type === "sleep").slice(-7).reduce((a,b) => a + b.value, 0) / (health.filter(h => h.type === "sleep").length || 1);
-    const recentMood = mood.slice(-3).filter(m => m.mood === "stressed" || m.mood === "sad").length;
+    const steps = health.filter((h: any) => h.type === "steps").slice(-7).reduce((a: any, b: any) => a + b.value, 0) / (health.filter((h: any) => h.type === "steps").length || 1);
+    const sleep = health.filter((h: any) => h.type === "sleep").slice(-7).reduce((a: any, b: any) => a + b.value, 0) / (health.filter((h: any) => h.type === "sleep").length || 1);
+    const recentMood = mood.slice(-3).filter((m: any) => m.mood === "stressed" || m.mood === "sad").length;
     
     const newAdvice = [
       steps < 5000 ? "🚶 Increase daily steps to 8,000+ for heart health." : "🏆 Great step count! Keep moving daily.",
@@ -94,5 +94,6 @@ export default function HealthCoachPage() {
     </div>
   );
 }
+
 
 
