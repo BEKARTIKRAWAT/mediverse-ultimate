@@ -19,7 +19,7 @@ export default function HealthReport() {
       const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user.id}`) || "[]");
       const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
       const mood = JSON.parse(localStorage.getItem(`mediverse_mood_${user.id}`) || "[]");
-      const adherence = meds.reduce((acc, m) => acc + (m.taken?.length || 0), 0) / (meds.length * 30) * 100;
+      const adherence = meds.reduce((acc: any, m: any) => acc + (m.taken?.length || 0), 0) / (meds.length * 30) * 100;
       setReport({ meds: meds.length, vitals: vitals.length, health: health.length, mood: mood.length, adherence: Math.round(adherence) });
       setLoading(false);
     };
@@ -58,4 +58,5 @@ export default function HealthReport() {
     </div>
   );
 }
+
 
