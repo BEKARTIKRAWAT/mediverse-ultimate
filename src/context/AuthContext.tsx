@@ -9,6 +9,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ error: any }>;
   register: (email: string, password: string, name: string) => Promise<{ error: any }>;
   logout: () => Promise<void>;
+  updateProfile: (data: { full_name?: string; avatar_url?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,7 +33,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (email: string, password: string, name: string) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: { data: { full_name: name } }
+    });
     if (!error && data.user) {
       await supabase.from("profiles").upsert({ id: data.user.id, email, full_name: name });
     }
@@ -43,8 +48,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
   };
 
+  const updateProfile = async (data: { full_name?: string; avatar_url?: string }) => {
+    if (!user) return;
+    const updates = { ...data, updated_at: new Date().toISOString() };
+    // Update user metadata
+    const { error: authError } = await supabase.auth.updateUser({
+      data: { full_name: data.full_name }
+    });
+    if (authError) console.error(authError);
+    // Update profiles table
+    await supabase.from("profiles").upsert({ id: user.id, ...updates });
+    // Refresh user object
+    const { data: refreshedUser } = await supabase.auth.getUser();
+    if (refreshedUser?.user) setUser(refreshedUser.user);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, register, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
