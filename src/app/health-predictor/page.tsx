@@ -1,7 +1,7 @@
 ﻿"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
-import { TrendingUp, Calendar, Heart, Activity, Droplet, Moon, Footprints, Brain, TrendingDown } from "lucide-react";
+import { TrendingUp, Calendar, Heart, Activity, Droplet, Moon, Footprints, Brain } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from "recharts";
 
 export default function HealthPredictorPro() {
@@ -13,17 +13,16 @@ export default function HealthPredictorPro() {
   useEffect(() => {
     if (!user) return;
     const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
-    const steps = health.filter((h: any) => h.type === "steps").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
-    const sleep = health.filter((h: any) => h.type === "sleep").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
-    const weight = health.filter((h: any) => h.type === "weight").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
+    const steps = health.filter((h: any) => h.type === "steps").sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const sleep = health.filter((h: any) => h.type === "sleep").sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const weight = health.filter((h: any) => h.type === "weight").sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
     
-    // Prepare chart data (last 14 days)
     const last14 = [...Array(14)].map((_, i) => {
       const date = new Date(); date.setDate(date.getDate() - (13 - i));
       const dateStr = date.toISOString().split("T")[0];
-      const stepEntry = steps.find(s => s.date === dateStr);
-      const sleepEntry = sleep.find(s => s.date === dateStr);
-      const weightEntry = weight.find(s => s.date === dateStr);
+      const stepEntry = steps.find((s: any) => s.date === dateStr);
+      const sleepEntry = sleep.find((s: any) => s.date === dateStr);
+      const weightEntry = weight.find((s: any) => s.date === dateStr);
       return {
         date: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
         steps: stepEntry?.value || 0,
@@ -33,7 +32,6 @@ export default function HealthPredictorPro() {
     });
     setTrendData(last14);
     
-    // AI predictions (simple linear regression mock)
     const avgSteps = steps.slice(-7).reduce((a: any, b: any) => a + b.value, 0) / (steps.slice(-7).length || 1);
     const avgSleep = sleep.slice(-7).reduce((a: any, b: any) => a + b.value, 0) / (sleep.slice(-7).length || 1);
     const trendSteps = steps.length >= 2 ? steps[steps.length-1].value - steps[steps.length-2].value : 0;
@@ -101,9 +99,3 @@ export default function HealthPredictorPro() {
     </div>
   );
 }
-
-
-
-
-
-
