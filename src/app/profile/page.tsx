@@ -39,7 +39,7 @@ export default function ProfilePage() {
                 {isEditing ? (
                   <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="text-2xl font-bold border-b-2 border-blue-500 px-2" />
                 ) : (
-                  <h1 className="text-2xl font-bold text-gray-800">{user.name}</h1>
+                  <h1 className="text-2xl font-bold text-gray-800">{user?.user_metadata?.full_name || user?.email?.split("@")[0]}</h1>
                 )}
                 <p className="text-gray-500 flex items-center gap-1 mt-1"><Mail size={14} /> {user.email}</p>
               </div>
@@ -66,5 +66,6 @@ export default function ProfilePage() {
     </div>
   );
 }
+
 
 

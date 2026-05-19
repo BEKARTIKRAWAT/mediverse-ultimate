@@ -45,7 +45,7 @@ export default function SettingsPage() {
     if (!user) return;
     setExporting(true);
     const data = {
-      user: { id: user.id, email: user.email, name: user.name },
+      user: { id: user.id, email: user.email, name: user?.user_metadata?.full_name || user?.email?.split("@")[0] },
       medications: JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]"),
       appointments: JSON.parse(localStorage.getItem(`mediverse_appointments_${user.id}`) || "[]"),
       healthMetrics: JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]"),
@@ -115,7 +115,7 @@ export default function SettingsPage() {
     doc.setFontSize(18);
     doc.text("Mediverse Health Report", 14, 22);
     doc.setFontSize(10);
-    doc.text(`User: ${user.name} (${user.email})`, 14, 32);
+    doc.text(`User: ${user?.user_metadata?.full_name || user?.email?.split("@")[0]} (${user.email})`, 14, 32);
     doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 38);
     doc.text(`User ID: ${user.id}`, 14, 44);
     
@@ -145,7 +145,7 @@ export default function SettingsPage() {
       y = (doc as any).lastAutoTable?.finalY + 10;
     }
     
-    doc.save(`Mediverse_Report_${user.name}_${new Date().toISOString().slice(0,10)}.pdf`);
+    doc.save(`Mediverse_Report_${user?.user_metadata?.full_name || user?.email?.split("@")[0]}_${new Date().toISOString().slice(0,10)}.pdf`);
     setGeneratingPDF(false);
   };
 
@@ -261,7 +261,7 @@ export default function SettingsPage() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-5">
             <div className="flex items-center gap-3 pb-3 border-b dark:border-gray-700">
               <User size={40} className="text-blue-500" />
-              <div><p className="font-semibold">{user.name}</p><p className="text-sm text-gray-500">{user.email}</p></div>
+              <div><p className="font-semibold">{user?.user_metadata?.full_name || user?.email?.split("@")[0]}</p><p className="text-sm text-gray-500">{user.email}</p></div>
             </div>
             <div className="space-y-2">
               <p><strong>Member since:</strong> {new Date(parseInt(user.id)).toLocaleDateString()}</p>
@@ -352,6 +352,7 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
 
