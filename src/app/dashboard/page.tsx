@@ -137,7 +137,7 @@ export default function MainDashboard() {
             <div className="flex flex-wrap justify-between items-center gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
-                  {greeting}, {user.name.split(" ")[0]}! 👋
+                  {greeting}, {user?.user_metadata?.full_name || user?.email?.split("@")[0].split(" ")[0]}! 👋
                 </h1>
                 <p className="text-gray-500 text-sm">Your complete health hub</p>
               </div>
@@ -199,6 +199,7 @@ export default function MainDashboard() {
     </>
   );
 }
+
 
 
 
