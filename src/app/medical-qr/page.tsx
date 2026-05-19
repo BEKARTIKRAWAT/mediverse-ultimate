@@ -16,7 +16,7 @@ export default function MedicalQR() {
   }, [user]);
 
   useEffect(() => {
-    const data = `MEDICAL ID\nName: ${user?.name}\nBlood: ${info.bloodType || "Not set"}\nAllergies: ${info.allergies || "None"}\nConditions: ${info.conditions || "None"}\nEmergency: ${info.emergencyContact || "Not set"}`;
+    const data = `MEDICAL ID\nName: ${user?.user_metadata?.full_name || user?.email?.split("@")[0]}\nBlood: ${info.bloodType || "Not set"}\nAllergies: ${info.allergies || "None"}\nConditions: ${info.conditions || "None"}\nEmergency: ${info.emergencyContact || "Not set"}`;
     QRCode.toDataURL(data, (err, url) => { if (!err) setQrDataUrl(url); });
   }, [info, user]);
 
@@ -34,6 +34,7 @@ export default function MedicalQR() {
     </div>
   );
 }
+
 
 
 

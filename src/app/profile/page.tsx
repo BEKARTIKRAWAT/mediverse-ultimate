@@ -7,7 +7,7 @@ import { User, Mail, LogOut, Save } from "lucide-react";
 export default function ProfilePage() {
   const { user, updateProfile, logout } = useAuth();
   const router = useRouter();
-  const [name, setName] = useState(user?.name || "");
+  const [name, setName] = useState(user?.user_metadata?.full_name || user?.email?.split("@")[0] || "");
   const [isEditing, setIsEditing] = useState(false);
 
   if (!user) {
@@ -66,6 +66,7 @@ export default function ProfilePage() {
     </div>
   );
 }
+
 
 
 
