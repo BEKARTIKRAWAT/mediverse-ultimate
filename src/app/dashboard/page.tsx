@@ -20,7 +20,7 @@ export default function MainDashboard() {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
   const [stats, setStats] = useState({ meds: 0, apts: 0, health: 0 });
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<{ temp: number; tip: string } | null>(null);
   const [adherenceScore, setAdherenceScore] = useState(100);
   const [greeting, setGreeting] = useState("");
   const [sosOpen, setSosOpen] = useState(false);
@@ -199,3 +199,4 @@ export default function MainDashboard() {
     </>
   );
 }
+
