@@ -11,9 +11,9 @@ export default function DataExport() {
     const vitals = JSON.parse(localStorage.getItem(`mediverse_vitals_${user.id}`) || "[]");
     const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
     let csv = "Type,Name,Value,Date\n";
-    meds.forEach(m => csv += `Medication,${m.name},${m.dosage || ""},${m.startDate || ""}\n`);
-    vitals.forEach(v => csv += `Vital,${v.type},${v.value},${v.date}\n`);
-    health.forEach(h => csv += `Health,${h.type},${h.value},${h.date}\n`);
+    meds.forEach((m: any) => csv += `Medication,${m.name},${m.dosage || ""},${m.startDate || ""}\n`);
+    vitals.forEach((v: any) => csv += `Vital,${v.type},${v.value},${v.date}\n`);
+    health.forEach((h: any) => csv += `Health,${h.type},${h.value},${h.date}\n`);
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -37,4 +37,5 @@ export default function DataExport() {
     </div>
   );
 }
+
 
