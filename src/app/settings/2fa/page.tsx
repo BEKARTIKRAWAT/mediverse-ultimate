@@ -50,9 +50,9 @@ export default function TwoFASetup() {
     if (delta !== null) {
       // Enable 2FA for user
       const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-      if (users[user?.email]) {
-        users[user?.email].twoFactorSecret = secret;
-        users[user?.email].backupCodes = backupCodes;
+      if (user?.email && users[user.email]) {
+        users[user.email].twoFactorSecret = secret;
+        users[user.email].backupCodes = backupCodes;
         localStorage.setItem("mediverse_users", JSON.stringify(users));
         setVerified(true);
         setError("");
@@ -104,5 +104,6 @@ export default function TwoFASetup() {
     </div>
   );
 }
+
 
 
