@@ -1,7 +1,6 @@
 ﻿"use client";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { syncAllFromLocalStorage } from "@/lib/db/indexedDB"; import { startReminderService, stopReminderService } from "@/lib/reminders/reminderService";
 
 interface User {
   id: string;
@@ -29,9 +28,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem("mediverse_current_user");
     if (stored) {
-      setUser(JSON.parse(stored));
-      // Sync offline data
-      syncAllFromLocalStorage(JSON.parse(stored).id);
+      try {
+        const parsed = JSON.parse(stored);
+        setUser(parsed);
+        // Also set a cookie for middleware
+        document.cookie = "mediverse_auth=true; path=/; max-age=604800";
+      } catch (e) {
+        console.error("Failed to parse user from localStorage", e);
+      }
     }
     setIsLoading(false);
   }, []);
@@ -41,10 +45,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const userData = users[email];
     if (userData && userData.password === password) {
       const { password: _, ...safeUser } = userData;
-      setUser(safeUser); startReminderService(safeUser.id);
+      setUser(safeUser);
       localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
       document.cookie = "mediverse_auth=true; path=/; max-age=604800";
-      await syncAllFromLocalStorage(safeUser.id);
       return true;
     }
     return false;
@@ -57,15 +60,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     users[email] = newUser;
     localStorage.setItem("mediverse_users", JSON.stringify(users));
     const { password: _, ...safeUser } = newUser;
-    setUser(safeUser); startReminderService(safeUser.id);
+    setUser(safeUser);
     localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
     document.cookie = "mediverse_auth=true; path=/; max-age=604800";
-    await syncAllFromLocalStorage(safeUser.id);
     return true;
   };
 
-  const logout = () => { stopReminderService();
-    stopReminderService(); setUser(null);
+  const logout = () => {
+    setUser(null);
     localStorage.removeItem("mediverse_current_user");
     document.cookie = "mediverse_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     router.push("/login");
@@ -91,4 +93,3 @@ export function useAuth() {
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 }
-
