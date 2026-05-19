@@ -53,7 +53,7 @@ export default function MentalHealthPage() {
 
   const calculateStreak = () => {
     if (entries.length === 0) { setStreak(0); return; }
-    const sorted = [...entries].sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const sorted = [...entries].sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
     let streakCount = 1;
     for (let i = 0; i < sorted.length - 1; i++) {
       const curr = new Date(sorted[i].date);
@@ -69,7 +69,7 @@ export default function MentalHealthPage() {
     if (entries.length < 3) { setInsight("Keep logging to see mood patterns!"); return; }
     const moodCount: Record<string, number> = {};
     entries.forEach(e => moodCount[e.mood] = (moodCount[e.mood] || 0) + 1);
-    const mostFrequent = Object.entries(moodCount).sort((a,b) => b[1] - a[1])[0];
+    const mostFrequent = Object.entries(moodCount).sort((a: any, b: any) => b[1] - a[1])[0];
     const latest = entries[entries.length-1]?.mood;
     const latestLabel = moodIcons[latest]?.label || latest;
     const mostLabel = moodIcons[mostFrequent[0]]?.label || mostFrequent[0];
@@ -110,7 +110,7 @@ export default function MentalHealthPage() {
   };
 
   const chartData = [...entries]
-    .sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(e => ({
       date: new Date(e.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
       moodValue: ["happy","neutral","sad","stressed","tired"].indexOf(e.mood) + 1,
@@ -171,14 +171,14 @@ export default function MentalHealthPage() {
                     <LineChart data={chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
-                      <YAxis domain={[1,5]} tickFormatter={(val) => ["Happy","Neutral","Sad","Stressed","Tired"][val-1]} />
-                      <Tooltip formatter={(val) => ["Happy","Neutral","Sad","Stressed","Tired"][val-1]} />
+                      <YAxis domain={[1,5]} tickFormatter={(val) => ["Happy","Neutral","Sad","Stressed","Tired"][(val as number)-1]} />
+                      <Tooltip formatter={(val) => ["Happy","Neutral","Sad","Stressed","Tired"][(val as number)-1]} />
                       <Line type="monotone" dataKey="moodValue" stroke="#a855f7" strokeWidth={2} dot={{ fill: "#a855f7" }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
                 <div className="space-y-3 max-h-96 overflow-y-auto">
-                  {[...entries].sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(entry => {
+                  {[...entries].sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(entry => {
                     const moodInfo = moodIcons[entry.mood];
                     if (!moodInfo) return null; // fallback for unknown mood
                     const { icon: Icon, color, bg, label } = moodInfo;
@@ -198,5 +198,7 @@ export default function MentalHealthPage() {
     </div>
   );
 }
+
+
 
 
