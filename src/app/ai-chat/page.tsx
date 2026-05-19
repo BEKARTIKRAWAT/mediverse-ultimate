@@ -5,7 +5,7 @@ import { Send, Loader2, Mic, Paperclip, Bot, User, Sparkles, Volume2, VolumeX, S
 
 export default function AIChatPage() {
   const { user, isLoading: authLoading } = useAuth();
-  const [messages, setMessages] = useState<{ id: number; role: "user" | "assistant"; content: string }[]>([]);
+  const [messages, setMessages] = useState<{ id: number; role: "user" as const as const | "assistant"; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -51,7 +51,7 @@ export default function AIChatPage() {
         setMessages(sanitized);
         nextId.current = sanitized.length + 1;
       } else {
-        setMessages([{ id: nextId.current++, role: "assistant", content: "Hello! I can speak English, Hindi, or Hinglish. Aap Hindi, English ya Hinglish mein poochh sakte hain. How can I help you?" }]);
+        setMessages([{ id: nextId.current++, role: "assistant" as const as const, content: "Hello! I can speak English, Hindi, or Hinglish. Aap Hindi, English ya Hinglish mein poochh sakte hain. How can I help you?" }]);
       }
     }
   }, [user]);
@@ -92,13 +92,13 @@ export default function AIChatPage() {
     const timeSinceLast = now - lastRequestTime.current;
     if (timeSinceLast < RATE_LIMIT_MS) {
       const waitSeconds = Math.ceil((RATE_LIMIT_MS - timeSinceLast) / 1000);
-      const warnMsg = { id: nextId.current++, role: "assistant", content: `⏳ Please wait ${waitSeconds} more seconds before sending another message (rate limit: 1 per ${RATE_LIMIT_MS/1000}s).` };
+      const warnMsg = { id: nextId.current++, role: "assistant" as const as const, content: `⏳ Please wait ${waitSeconds} more seconds before sending another message (rate limit: 1 per ${RATE_LIMIT_MS/1000}s).` };
       setMessages(prev => [...prev, warnMsg]);
       return;
     }
     lastRequestTime.current = now;
 
-    const userMsg = { id: nextId.current++, role: "user", content: msgText };
+    const userMsg = { id: nextId.current++, role: "user" as const as const, content: msgText };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
@@ -110,16 +110,16 @@ export default function AIChatPage() {
       });
       const data = await res.json();
       if (res.status === 429) {
-        setMessages(prev => [...prev, { id: nextId.current++, role: "assistant", content: "⏳ Server busy (rate limit). Retrying in 3 seconds..." }]);
+        setMessages(prev => [...prev, { id: nextId.current++, role: "assistant" as const as const, content: "⏳ Server busy (rate limit). Retrying in 3 seconds..." }]);
         setTimeout(() => { setIsLoading(false); sendMessage(msgText); }, 3000);
         return;
       }
       if (data.error) throw new Error(data.error);
-      const replyMsg = { id: nextId.current++, role: "assistant", content: data.reply };
+      const replyMsg = { id: nextId.current++, role: "assistant" as const as const, content: data.reply };
       setMessages(prev => [...prev, replyMsg]);
       speakResponse(data.reply);
     } catch (err: any) {
-      const errorMsg = { id: nextId.current++, role: "assistant", content: `⚠️ ${err.message || "Connection error. Try again."}` };
+      const errorMsg = { id: nextId.current++, role: "assistant" as const as const, content: `⚠️ ${err.message || "Connection error. Try again."}` };
       setMessages(prev => [...prev, errorMsg]);
     }
     setIsLoading(false);
@@ -256,4 +256,7 @@ export default function AIChatPage() {
     </div>
   );
 }
+
+
+
 
