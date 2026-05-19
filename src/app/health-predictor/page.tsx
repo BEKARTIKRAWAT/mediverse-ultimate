@@ -13,9 +13,9 @@ export default function HealthPredictorPro() {
   useEffect(() => {
     if (!user) return;
     const health = JSON.parse(localStorage.getItem(`mediverse_health_${user.id}`) || "[]");
-    const steps = health.filter(h => h.type === "steps").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
-    const sleep = health.filter(h => h.type === "sleep").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
-    const weight = health.filter(h => h.type === "weight").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
+    const steps = health.filter((h: any) => h.type === "steps").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
+    const sleep = health.filter((h: any) => h.type === "sleep").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
+    const weight = health.filter((h: any) => h.type === "weight").sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime());
     
     // Prepare chart data (last 14 days)
     const last14 = [...Array(14)].map((_, i) => {
@@ -34,8 +34,8 @@ export default function HealthPredictorPro() {
     setTrendData(last14);
     
     // AI predictions (simple linear regression mock)
-    const avgSteps = steps.slice(-7).reduce((a,b) => a + b.value, 0) / (steps.slice(-7).length || 1);
-    const avgSleep = sleep.slice(-7).reduce((a,b) => a + b.value, 0) / (sleep.slice(-7).length || 1);
+    const avgSteps = steps.slice(-7).reduce((a: any, b: any) => a + b.value, 0) / (steps.slice(-7).length || 1);
+    const avgSleep = sleep.slice(-7).reduce((a: any, b: any) => a + b.value, 0) / (sleep.slice(-7).length || 1);
     const trendSteps = steps.length >= 2 ? steps[steps.length-1].value - steps[steps.length-2].value : 0;
     setPredictions({
       stepsPrediction: Math.max(0, Math.round(avgSteps + trendSteps)),
@@ -101,5 +101,6 @@ export default function HealthPredictorPro() {
     </div>
   );
 }
+
 
 
