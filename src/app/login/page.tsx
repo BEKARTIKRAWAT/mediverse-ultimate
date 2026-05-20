@@ -1,7 +1,6 @@
 ﻿"use client";
 import { useState, useEffect } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter } "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, LogIn, Eye, EyeOff } from "lucide-react";
 
@@ -11,45 +10,45 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const router = useRouter();
 
-  // Ensure demo user exists (client-side only)
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-      if (!users["demo@mediverse.com"]) {
-        users["demo@mediverse.com"] = {
-          id: "demo123",
-          email: "demo@mediverse.com",
-          name: "Demo User",
-          password: "demo123"
-        };
-        localStorage.setItem("mediverse_users", JSON.stringify(users));
-      }
+  // Create demo user directly in localStorage
+  const setupDemoUser = () => {
+    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+    if (!users["demo@mediverse.com"]) {
+      users["demo@mediverse.com"] = {
+        id: "demo_" + Date.now(),
+        email: "demo@mediverse.com",
+        name: "Demo User",
+        password: "demo123"
+      };
+      localStorage.setItem("mediverse_users", JSON.stringify(users));
     }
-  }, []);
+    // Also set current user
+    const demoUser = {
+      id: "demo_" + Date.now(),
+      email: "demo@mediverse.com",
+      name: "Demo User"
+    };
+    localStorage.setItem("mediverse_current_user", JSON.stringify(demoUser));
+    // Set a cookie for middleware
+    document.cookie = "mediverse_auth=true; path=/";
+    router.push("/dashboard");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const success = await login(email, password);
-    if (success) {
+    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+    const userData = users[email];
+    if (userData && userData.password === password) {
+      const { password: _, ...safeUser } = userData;
+      localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
+      document.cookie = "mediverse_auth=true; path=/";
       router.push("/dashboard");
     } else {
       setError("Invalid email or password");
-    }
-    setLoading(false);
-  };
-
-  const handleDemoLogin = async () => {
-    setLoading(true);
-    const success = await login("demo@mediverse.com", "demo123");
-    if (success) {
-      router.push("/dashboard");
-    } else {
-      setError("Demo login failed. Please try again.");
     }
     setLoading(false);
   };
@@ -96,11 +95,10 @@ export default function LoginPage() {
         </div>
 
         <button
-          onClick={handleDemoLogin}
-          disabled={loading}
+          onClick={setupDemoUser}
           className="w-full bg-green-600 text-white py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-green-700 transition"
         >
-          🚀 Try Demo (No Registration)
+          🚀 Try Demo (Instant Access)
         </button>
 
         <p className="text-center text-sm text-gray-600 mt-4">
