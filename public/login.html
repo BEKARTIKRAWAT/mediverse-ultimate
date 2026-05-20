@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Mediverse Login</title>
+    <style>
+        body { font-family: system-ui; background: linear-gradient(135deg, #e0f2fe, #e0e7ff); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        .card { background: white; border-radius: 2rem; padding: 2rem; max-width: 400px; width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.875rem; text-align: center; margin-bottom: 0.5rem; }
+        .sub { text-align: center; color: #6b7280; margin-bottom: 2rem; }
+        input { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.75rem; margin-bottom: 1rem; box-sizing: border-box; }
+        button, .demo-link { display: block; width: 100%; background: linear-gradient(to right, #3b82f6, #4f46e5); color: white; text-align: center; padding: 0.75rem; border: none; border-radius: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none; margin-top: 0.5rem; }
+        .demo-link { background: #10b981; margin-top: 1rem; }
+        button:hover, .demo-link:hover { opacity: 0.9; }
+        .error { color: #dc2626; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; }
+        .link { text-align: center; margin-top: 1rem; font-size: 0.875rem; }
+        a { color: #3b82f6; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Welcome Back</h1>
+    <div class="sub">Sign in to your Mediverse account</div>
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <div id="errorMsg" class="error"></div>
+        <button type="submit">Sign In</button>
+    </form>
+    <a href="/dashboard.html" class="demo-link" id="demoLink">🚀 Try Demo (No Registration)</a>
+    <div class="link">Don't have an account? <a href="#" id="registerLink">Sign up</a></div>
+</div>
+<script>
+    // When demo link is clicked, set demo user before navigating (the href will still work)
+    document.getElementById("demoLink").addEventListener("click", function(e) {
+        // Set demo user in localStorage
+        let users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+        if (!users["demo@mediverse.com"]) {
+            users["demo@mediverse.com"] = {
+                id: "demo123",
+                email: "demo@mediverse.com",
+                name: "Demo User",
+                password: "demo123"
+            };
+            localStorage.setItem("mediverse_users", JSON.stringify(users));
+        }
+        localStorage.setItem("mediverse_current_user", JSON.stringify({
+            id: "demo123",
+            email: "demo@mediverse.com",
+            name: "Demo User"
+        }));
+        // Do not prevent default – the href will take us to dashboard.html
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+        const userData = users[email];
+        if (userData && userData.password === password) {
+            const safeUser = { id: userData.id, email: userData.email, name: userData.name };
+            localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
+            window.location.href = "/dashboard.html";
+        } else {
+            document.getElementById("errorMsg").innerText = "Invalid email or password";
+        }
+    });
+
+    document.getElementById("registerLink").addEventListener("click", function(e) {
+        e.preventDefault();
+        alert("Please use the demo button or create an account via the React register page (if available).");
+    });
+</script>
+</body>
+</html>

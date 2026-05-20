@@ -26,11 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("mediverse_current_user");
-      if (stored) {
-        try {
-          setUser(JSON.parse(stored));
-        } catch(e) {}
-      }
+      if (stored) setUser(JSON.parse(stored));
     }
     setIsLoading(false);
   }, []);

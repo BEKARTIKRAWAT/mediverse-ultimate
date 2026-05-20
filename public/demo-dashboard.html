@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Mediverse Demo Dashboard</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .card { max-width: 1200px; margin: auto; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #1e3a8a; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 15px; margin-top: 20px; }
+        .feature { background: #e0e7ff; padding: 15px; border-radius: 12px; text-align: center; text-decoration: none; color: #1e3a8a; display: block; }
+        .feature:hover { background: #c7d2fe; }
+        button { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Welcome, Demo User! 🎉</h1>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <p>Your health dashboard (40+ features). Click any card to use the feature.</p>
+        <div class="grid" id="features"></div>
+    </div>
+    <script>
+        // Store demo user in localStorage
+        localStorage.setItem("mediverse_current_user", JSON.stringify({ id: "demo", name: "Demo User", email: "demo@mediverse.com" }));
+        const features = [
+            "AI Chat", "Medication Tracker", "Appointments", "Health Analytics", "Vital Signs", "AI Doctor",
+            "Symptom Checker", "Mental Health", "Drug Interaction", "Nearby Hospitals", "SOS Emergency", "Health News",
+            "Emergency Contacts", "Health Streaks", "Barcode Scanner", "Sleep Tracker", "Water Reminder", "Health Journal",
+            "Exercise Library", "BMI Calculator", "BP Tracker", "Health Tip", "Medical ID", "Step Challenge",
+            "Telemedicine", "Diet Plan", "Health Report", "Health Coach", "Fitness Plan", "Refill Tracker", "Weekly Summary"
+        ];
+        const container = document.getElementById("features");
+        features.forEach(f => {
+            const link = document.createElement("a");
+            link.className = "feature";
+            link.href = `/${f.toLowerCase().replace(/ /g, "-")}`;
+            link.textContent = f;
+            container.appendChild(link);
+        });
+        function logout() {
+            localStorage.removeItem("mediverse_current_user");
+            alert("Logged out. Refresh to see login page.");
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

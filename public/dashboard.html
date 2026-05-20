@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Mediverse Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: system-ui; background: #f3f4f6; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; border-radius: 24px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { margin: 0; font-size: 1.8rem; color: #1e3a8a; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-bottom: 80px; }
+        .card { background: white; padding: 16px; border-radius: 16px; text-align: center; text-decoration: none; color: #1f2937; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: block; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #f9fafb; }
+        .emoji { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+        .feature-name { font-weight: 500; font-size: 0.9rem; }
+        .footer { text-align: center; margin-top: 32px; font-size: 0.75rem; color: #9ca3af; }
+        .fab-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
+        .fab-button { background: linear-gradient(to right, #3b82f6, #4f46e5); color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s; border: none; font-size: 28px; }
+        .fab-button:hover { transform: scale(1.05); }
+        .fab-menu { position: absolute; bottom: 70px; right: 0; display: flex; flex-direction: column; gap: 10px; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; }
+        .fab-container.open .fab-menu { opacity: 1; visibility: visible; }
+        .fab-item { background: white; color: #1f2937; padding: 10px 20px; border-radius: 40px; display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap; }
+        .fab-item:hover { background: #f3f4f6; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div><h1>Welcome, Demo User! 👋</h1><p style="color:#6b7280">Your complete health dashboard (40+ features)</p></div>
+    </div>
+    <div class="grid" id="featuresGrid"></div>
+    <div class="footer">🔒 Demo mode – all data stored locally. Click any card to explore.</div>
+</div>
+<div class="fab-container" id="fabContainer">
+    <div class="fab-menu" id="fabMenu">
+        <a href="/medication-tracker" class="fab-item">💊 Add Medication</a>
+        <a href="/appointments" class="fab-item">📅 Add Appointment</a>
+        <a href="/symptom-checker" class="fab-item">🤒 Symptom Checker</a>
+        <a href="/ai-chat" class="fab-item">💬 AI Chat</a>
+    </div>
+    <div class="fab-button" id="fabButton">+</div>
+</div>
+<script>
+    // Auto-create demo user
+    localStorage.setItem("mediverse_current_user", JSON.stringify({ id: "demo123", email: "demo@mediverse.com", name: "Demo User" }));
+    let users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+    if (!users["demo@mediverse.com"]) {
+        users["demo@mediverse.com"] = { id: "demo123", email: "demo@mediverse.com", name: "Demo User", password: "demo123" };
+        localStorage.setItem("mediverse_users", JSON.stringify(users));
+    }
+
+    const features = [
+        "AI Chat","Medication Tracker","Appointments","Health Analytics","Vital Signs",
+        "AI Doctor","Symptom Checker","Mental Health","Drug Interaction","Nearby Hospitals",
+        "SOS Emergency","Health News","Emergency Contacts","Health Streaks","Barcode Scanner",
+        "Sleep Tracker","Water Reminder","Health Journal","Exercise Library","BMI Calculator",
+        "BP Tracker","Health Tip","Medical ID","Step Challenge","Telemedicine","Diet Plan",
+        "Health Report","Health Coach","Fitness Plan","Refill Tracker","Weekly Summary",
+        "Live Monitor","AI Risk Predictor","Health Predictor Pro","Medical QR","Data Export"
+    ];
+    const emojiMap = {
+        "AI Chat":"💬","Medication Tracker":"💊","Appointments":"📅","Health Analytics":"📊",
+        "Vital Signs":"❤️","AI Doctor":"🩺","Symptom Checker":"🤒","Mental Health":"🧠",
+        "Drug Interaction":"⚠️","Nearby Hospitals":"🏥","SOS Emergency":"🆘","Health News":"📰",
+        "Emergency Contacts":"📞","Health Streaks":"🏆","Barcode Scanner":"📷","Sleep Tracker":"😴",
+        "Water Reminder":"💧","Health Journal":"📓","Exercise Library":"💪","BMI Calculator":"📏",
+        "BP Tracker":"🩸","Health Tip":"💡","Medical ID":"🆔","Step Challenge":"👣",
+        "Telemedicine":"🎥","Diet Plan":"🍎","Health Report":"📄","Health Coach":"🧘",
+        "Fitness Plan":"🏋️","Refill Tracker":"🔄","Weekly Summary":"📧","Live Monitor":"📈",
+        "AI Risk Predictor":"🎯","Health Predictor Pro":"📉","Medical QR":"🔲","Data Export":"💾"
+    };
+    const grid = document.getElementById("featuresGrid");
+    features.forEach(f => {
+        const link = document.createElement("a");
+        link.href = `/${f.toLowerCase().replace(/ /g, "-")}`;
+        link.className = "card";
+        link.innerHTML = `<span class="emoji">${emojiMap[f] || "🔹"}</span><span class="feature-name">${f}</span>`;
+        grid.appendChild(link);
+    });
+
+    const fabContainer = document.getElementById("fabContainer");
+    const fabButton = document.getElementById("fabButton");
+    fabButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        fabContainer.classList.toggle("open");
+    });
+    document.addEventListener("click", function(event) {
+        if (!fabContainer.contains(event.target)) {
+            fabContainer.classList.remove("open");
+        }
+    });
+</script>
+</body>
+</html>
