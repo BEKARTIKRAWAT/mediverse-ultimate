@@ -16,7 +16,7 @@ export default function WeeklySummary() {
     const lastWeekMeds = meds.length;
     const lastVital = vitals.slice(-1)[0];
     const recentMood = mood.slice(-3).filter(m => m.mood === "happy").length;
-    const text = `📊 Mediverse Weekly Health Summary\n\nUser: ${user?.user_metadata?.full_name || user?.email?.split("@")[0]}\nDate: ${new Date().toLocaleDateString()}\n\n✅ Medications tracked: ${lastWeekMeds}\n❤️ Latest vital: ${lastVital ? `${lastVital.type}: ${lastVital.value}` : "No vitals logged"}\n😊 Positive mood entries (last 3): ${recentMood}/3\n\n💡 Tip: Continue logging daily for better insights.\n\nStay healthy,\nMediverse AI`;
+    const text = `📊 Mediverse Weekly Health Summary\n\nUser: ${user?.name || user?.email?.split("@")[0]}\nDate: ${new Date().toLocaleDateString()}\n\n✅ Medications tracked: ${lastWeekMeds}\n❤️ Latest vital: ${lastVital ? `${lastVital.type}: ${lastVital.value}` : "No vitals logged"}\n😊 Positive mood entries (last 3): ${recentMood}/3\n\n💡 Tip: Continue logging daily for better insights.\n\nStay healthy,\nMediverse AI`;
     setSummary(text);
   }, [user]);
 
@@ -45,6 +45,7 @@ export default function WeeklySummary() {
     </div>
   );
 }
+
 
 
 

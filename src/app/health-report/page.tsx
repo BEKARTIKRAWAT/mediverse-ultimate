@@ -34,7 +34,7 @@ export default function HealthReport() {
     doc.setFontSize(20);
     doc.text("Mediverse Health Report", 14, 22);
     doc.setFontSize(10);
-    doc.text(`User: ${user?.user_metadata?.full_name || user?.email?.split("@")[0]} (${user?.email})`, 14, 32);
+    doc.text(`User: ${user?.name || user?.email?.split("@")[0]} (${user?.email})`, 14, 32);
     doc.text(`Date: ${new Date().toLocaleString()}`, 14, 38);
     autoTable(doc, { startY: 45, head: [["Metric", "Value"]], body: [["Medications tracked", report.meds], ["Vital entries", report.vitals], ["Health logs", report.health], ["Mood entries", report.mood], ["Adherence rate", `${report.adherence}%`]] });
     doc.save("Mediverse_Health_Report.pdf");
@@ -58,6 +58,7 @@ export default function HealthReport() {
     </div>
   );
 }
+
 
 
 

@@ -42,14 +42,14 @@ export default function HealthCoachPage() {
     doc.setFontSize(18);
     doc.text("AI Health Coach Report", 14, 22);
     doc.setFontSize(10);
-    doc.text(`Generated for ${user?.user_metadata?.full_name || user?.email?.split("@")[0]} (${user?.email})`, 14, 32);
+    doc.text(`Generated for ${user?.name || user?.email?.split("@")[0]} (${user?.email})`, 14, 32);
     doc.text(`Date: ${new Date().toLocaleString()}`, 14, 38);
     autoTable(doc, { startY: 45, head: [["Wellness Tip", "Action"]], body: advice.map(a => [a, "✓ Follow daily"]) });
     doc.save("health_coach_report.pdf");
   };
 
   const exportJSON = () => {
-    const data = { user: user?.user_metadata?.full_name || user?.email?.split("@")[0], date: new Date().toISOString(), advice };
+    const data = { user: user?.name || user?.email?.split("@")[0], date: new Date().toISOString(), advice };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -94,6 +94,7 @@ export default function HealthCoachPage() {
     </div>
   );
 }
+
 
 
 
