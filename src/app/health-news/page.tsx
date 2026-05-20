@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Newspaper, ExternalLink, Loader2, Calendar, Heart, TrendingUp, Apple, Brain, Shield } from "lucide-react";
@@ -124,5 +125,6 @@ export default function HealthNewsPage() {
     </div>
   );
 }
+
 
 

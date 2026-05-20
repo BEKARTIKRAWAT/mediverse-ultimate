@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useSettings } from "@/context/SettingsContext";
 import { useState, useEffect } from "react";
@@ -292,7 +293,7 @@ export default function SettingsPage() {
                   <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
                 </div>
                 <button
-                  onClick={() => window.window.location.href = "/settings/2fa"}
+                  onClick={() => window.window.window.location.href = "/settings/2fa"}
                   className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
                 >
                   Set Up 2FA
@@ -352,6 +353,8 @@ export default function SettingsPage() {
     </div>
   );
 }
+
+
 
 
 

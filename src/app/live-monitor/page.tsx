@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect, useRef } from "react";
 import { Activity, Heart, Footprints, ActivitySquare, TrendingUp, AlertCircle } from "lucide-react";
@@ -129,5 +130,6 @@ export default function LiveHealthMonitor() {
     </div>
   );
 }
+
 
 

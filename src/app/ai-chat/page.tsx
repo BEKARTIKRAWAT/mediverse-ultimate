@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2, Mic, Paperclip, Bot, User, Sparkles, Volume2, VolumeX, Settings } from "lucide-react";
@@ -233,6 +234,7 @@ export default function AIChatPage() {
     </div>
   );
 }
+
 
 
 

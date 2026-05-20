@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { AlertTriangle, Phone, MapPin, Bell, Shield, X } from "lucide-react";
@@ -55,5 +56,6 @@ export default function SOSPage() {
     </div>
   );
 }
+
 
 

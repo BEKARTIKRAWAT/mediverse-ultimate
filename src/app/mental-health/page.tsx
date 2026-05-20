@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Brain, Calendar, TrendingUp, Smile, Meh, Frown, Angry, Battery, Sparkles, BarChart, List, Plus, Trash2, Heart, Wind, Download } from "lucide-react";
@@ -198,6 +199,7 @@ export default function MentalHealthPage() {
     </div>
   );
 }
+
 
 
 

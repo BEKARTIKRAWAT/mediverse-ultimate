@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Lightbulb, RefreshCw } from "lucide-react";
@@ -34,5 +35,6 @@ export default function HealthTip() {
     </div>
   );
 }
+
 
 

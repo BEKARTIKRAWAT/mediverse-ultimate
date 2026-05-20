@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useState } from "react";
 import Link from "next/link";
 import { User, Mail, Lock, UserPlus, Eye, EyeOff } from "lucide-react";
@@ -26,7 +27,7 @@ export default function RegisterPage() {
     localStorage.setItem("mediverse_users", JSON.stringify(users));
     const { password: _, ...safeUser } = newUser;
     localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
-    window.window.location.href = "/dashboard";
+    window.window.window.location.href = "/dashboard";
   };
 
   return (
@@ -46,4 +47,6 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+
 

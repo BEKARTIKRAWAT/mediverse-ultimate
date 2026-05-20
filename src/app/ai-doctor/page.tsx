@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Stethoscope, Send, Loader2, User, Bot } from "lucide-react";
@@ -74,6 +75,7 @@ Provide personalized, empathetic medical advice. Never diagnose but give helpful
     </div>
   );
 }
+
 
 
 

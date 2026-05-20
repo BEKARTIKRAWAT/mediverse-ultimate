@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Phone, Mail, Plus, Trash2, Send, Edit, X, AlertTriangle } from "lucide-react";
@@ -58,7 +59,7 @@ export default function EmergencyContacts() {
   const sendSMS = (phone: string, name: string) => {
     setSending(phone);
     const message = `🚨 EMERGENCY ALERT from ${userDisplayName} (Mediverse). Please check on me immediately.`;
-    window.window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
+    window.window.window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
     setTimeout(() => setSending(null), 1000);
   };
 
@@ -112,4 +113,6 @@ export default function EmergencyContacts() {
     </div>
   );
 }
+
+
 

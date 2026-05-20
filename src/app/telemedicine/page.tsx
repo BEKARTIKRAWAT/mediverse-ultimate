@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { Video, Phone, Mic, MicOff, VideoOff } from "lucide-react";
@@ -37,5 +38,6 @@ export default function TelemedicinePage() {
     </div>
   );
 }
+
 
 

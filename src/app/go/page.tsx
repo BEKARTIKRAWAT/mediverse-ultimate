@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useEffect } from "react";
 
 export default function GoToDashboard() {
@@ -21,8 +22,10 @@ export default function GoToDashboard() {
       name: "Demo User",
     }));
     // Redirect to dashboard
-    window.window.location.href = "/dashboard";
+    window.window.window.location.href = "/dashboard";
   }, []);
   return <div className="min-h-screen flex items-center justify-center">Redirecting to dashboard...</div>;
 }
+
+
 

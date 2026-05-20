@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useState } from "react";
 import Link from "next/link";
 import { Mail, Lock, LogIn, Eye, EyeOff } from "lucide-react";
@@ -20,7 +21,7 @@ export default function LoginPage() {
     if (userData && userData.password === password) {
       const { password: _, ...safeUser } = userData;
       localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
-      window.window.location.href = "/dashboard";
+      window.router.push("/dashboard");
     } else {
       setError("Invalid email or password");
       setLoading(false);
@@ -46,4 +47,6 @@ export default function LoginPage() {
     </div>
   );
 }
+
+
 

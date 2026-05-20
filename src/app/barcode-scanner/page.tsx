@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Camera, Loader2, X } from "lucide-react";
@@ -84,6 +85,7 @@ export default function BarcodeScannerPage() {
     </div>
   );
 }
+
 
 
 

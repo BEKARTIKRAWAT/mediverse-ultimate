@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { Apple, Loader2, Sparkles, Target } from "lucide-react";
@@ -40,5 +41,6 @@ export default function DietPlanPage() {
     </div>
   );
 }
+
 
 

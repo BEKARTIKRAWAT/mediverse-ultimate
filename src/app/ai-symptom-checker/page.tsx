@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { Activity, Loader2, Send, Brain } from "lucide-react";
@@ -38,5 +39,6 @@ export default function AISymptomChecker() {
     </div>
   );
 }
+
 
 

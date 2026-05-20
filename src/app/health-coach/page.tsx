@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Brain, Sparkles, Download, FileText, RefreshCw, Activity, Heart, Moon, Footprints, Apple, TrendingUp, Loader2 } from "lucide-react";
@@ -94,6 +95,7 @@ export default function HealthCoachPage() {
     </div>
   );
 }
+
 
 
 

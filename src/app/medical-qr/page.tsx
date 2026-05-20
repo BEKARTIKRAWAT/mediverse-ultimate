@@ -1,4 +1,5 @@
-﻿"use client";
+﻿export const dynamic = 'force-dynamic';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import QRCode from "qrcode";
@@ -34,6 +35,7 @@ export default function MedicalQR() {
     </div>
   );
 }
+
 
 
 
