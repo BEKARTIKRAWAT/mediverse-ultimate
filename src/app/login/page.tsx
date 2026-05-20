@@ -1,5 +1,5 @@
 ﻿"use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -14,19 +14,21 @@ export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
 
-  // Ensure demo user exists in localStorage
-  if (typeof window !== "undefined") {
-    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-    if (!users["demo@mediverse.com"]) {
-      users["demo@mediverse.com"] = {
-        id: "demo123",
-        email: "demo@mediverse.com",
-        name: "Demo User",
-        password: "demo123"
-      };
-      localStorage.setItem("mediverse_users", JSON.stringify(users));
+  // Ensure demo user exists (client-side only)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+      if (!users["demo@mediverse.com"]) {
+        users["demo@mediverse.com"] = {
+          id: "demo123",
+          email: "demo@mediverse.com",
+          name: "Demo User",
+          password: "demo123"
+        };
+        localStorage.setItem("mediverse_users", JSON.stringify(users));
+      }
     }
-  }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -24,7 +24,6 @@ export default function RegisterPage() {
     setLoading(true);
     const success = await register(name, email, password);
     if (success) {
-      document.cookie = "mediverse_auth=true; path=/";
       router.push("/dashboard");
     } else {
       setError("Email already exists");
@@ -33,7 +32,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"><UserPlus className="w-8 h-8 text-white" /></div>
@@ -53,6 +52,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
-
-
