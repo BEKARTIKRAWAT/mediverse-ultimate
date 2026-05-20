@@ -9,20 +9,24 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");  // Ensure demo user exists in localStorage
-  const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-  if (!users["demo@mediverse.com"]) {
-    users["demo@mediverse.com"] = {
-      id: "demo123",
-      email: "demo@mediverse.com",
-      name: "Demo User",
-      password: "demo123"
-    };
-    localStorage.setItem("mediverse_users", JSON.stringify(users));
-  }
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+
+  // Ensure demo user exists in localStorage
+  if (typeof window !== "undefined") {
+    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+    if (!users["demo@mediverse.com"]) {
+      users["demo@mediverse.com"] = {
+        id: "demo123",
+        email: "demo@mediverse.com",
+        name: "Demo User",
+        password: "demo123"
+      };
+      localStorage.setItem("mediverse_users", JSON.stringify(users));
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +34,6 @@ export default function LoginPage() {
     setLoading(true);
     const success = await login(email, password);
     if (success) {
-      document.cookie = "mediverse_auth=true; path=/";
       router.push("/dashboard");
     } else {
       setError("Invalid email or password");
@@ -38,8 +41,19 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    const success = await login("demo@mediverse.com", "demo123");
+    if (success) {
+      router.push("/dashboard");
+    } else {
+      setError("Demo login failed. Please try again.");
+    }
+    setLoading(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -67,34 +81,30 @@ export default function LoginPage() {
             </div>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 rounded-xl hover:shadow-lg transition flex items-center justify-center gap-2">
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>          <div class="relative my-4">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-300"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">Or</span>
-            </div>
+          <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 rounded-xl">{loading ? "Signing in..." : "Sign In"}</button>
+        </form>
+
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
           </div>
-          <button
-            onClick={async () => {
-              const demoEmail = "demo@mediverse.com";
-              const demoPassword = "demo123";
-              const success = await login(demoEmail, demoPassword);
-              if (success) router.push("/dashboard");
-              else alert("Demo login failed. Please register first.");
-            }}
-            className="w-full bg-green-600 text-white py-2 rounded-xl flex items-center justify-center gap-2"
-          >
-            🚀 Try Demo (No Registration)
-          </button>
-        <p className="text-center text-sm text-gray-600 mt-4">Don't have an account? <Link href="/register" className="text-blue-600 font-semibold">Sign up</Link></p>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">Or</span>
+          </div>
+        </div>
+
+        <button
+          onClick={handleDemoLogin}
+          disabled={loading}
+          className="w-full bg-green-600 text-white py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-green-700 transition"
+        >
+          🚀 Try Demo (No Registration)
+        </button>
+
+        <p className="text-center text-sm text-gray-600 mt-4">
+          Don't have an account? <Link href="/register" className="text-blue-600 font-semibold">Sign up</Link>
+        </p>
       </div>
     </div>
   );
 }
-
-
-
