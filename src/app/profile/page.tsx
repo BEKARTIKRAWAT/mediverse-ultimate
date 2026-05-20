@@ -21,18 +21,18 @@ export default function ProfilePage() {
       setError("Name cannot be empty");
       return;
     }
-    // Update the user in localStorage
+    // Update user in localStorage
     const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
     const userData = users[user.email];
     if (userData) {
       userData.name = name;
       users[user.email] = userData;
       localStorage.setItem("mediverse_users", JSON.stringify(users));
-      // Update current user in localStorage
+      // Update current user
       const currentUser = JSON.parse(localStorage.getItem("mediverse_current_user") || "{}");
       currentUser.name = name;
       localStorage.setItem("mediverse_current_user", JSON.stringify(currentUser));
-      // Force reload to reflect changes (or you could update state via context, but simple reload works)
+      // Force reload to reflect changes (simple and works)
       window.location.reload();
     }
     setIsEditing(false);

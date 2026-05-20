@@ -1,14 +1,19 @@
 ﻿"use client";
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useRouter } from "next/navigation";
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+}
 
 interface AuthContextType {
   user: User | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
+  logout: () => void;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<{ error: any }>;
-  register: (email: string, password: string, name: string) => Promise<{ error: any }>;
-  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,39 +21,55 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const supabase = createClient();
+  const router = useRouter();
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-      setIsLoading(false);
-    });
-    return () => listener?.subscription.unsubscribe();
-  }, [supabase]);
-
-  const login = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
-  };
-
-  const register = async (email: string, password: string, name: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: name } }
-    });
-    if (!error && data.user) {
-      await supabase.from("profiles").upsert({ id: data.user.id, email, full_name: name });
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("mediverse_current_user");
+      if (stored) {
+        try {
+          setUser(JSON.parse(stored));
+        } catch(e) {}
+      }
     }
-    return { error };
+    setIsLoading(false);
+  }, []);
+
+  const login = async (email: string, password: string): Promise<boolean> => {
+    if (typeof window === "undefined") return false;
+    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+    const userData = users[email];
+    if (userData && userData.password === password) {
+      const { password: _, ...safeUser } = userData;
+      setUser(safeUser);
+      localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
+      return true;
+    }
+    return false;
   };
 
-  const logout = async () => {
-    await supabase.auth.signOut();
+  const register = async (name: string, email: string, password: string): Promise<boolean> => {
+    if (typeof window === "undefined") return false;
+    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+    if (users[email]) return false;
+    const newUser = { id: Date.now().toString(), email, name, password };
+    users[email] = newUser;
+    localStorage.setItem("mediverse_users", JSON.stringify(users));
+    const { password: _, ...safeUser } = newUser;
+    setUser(safeUser);
+    localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
+    return true;
+  };
+
+  const logout = () => {
+    if (typeof window === "undefined") return;
+    setUser(null);
+    localStorage.removeItem("mediverse_current_user");
+    router.push("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
