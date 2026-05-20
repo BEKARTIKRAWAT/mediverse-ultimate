@@ -18,8 +18,8 @@ export default function EmergencyContacts() {
   const [form, setForm] = useState({ name: "", phone: "", email: "" });
   const [sending, setSending] = useState<string | null>(null);
 
-  // Get user's display name safely
-  const userDisplayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Mediverse User";
+  // Get user's display name safely – works with mock user (has .name)
+  const userDisplayName = user?.name || user?.email?.split("@")[0] || "Mediverse User";
 
   useEffect(() => {
     if (!user) return;
