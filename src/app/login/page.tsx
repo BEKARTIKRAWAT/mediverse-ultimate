@@ -9,7 +9,17 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState("");  // Ensure demo user exists in localStorage
+  const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+  if (!users["demo@mediverse.com"]) {
+    users["demo@mediverse.com"] = {
+      id: "demo123",
+      email: "demo@mediverse.com",
+      name: "Demo User",
+      password: "demo123"
+    };
+    localStorage.setItem("mediverse_users", JSON.stringify(users));
+  }
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
@@ -60,11 +70,31 @@ export default function LoginPage() {
           <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 rounded-xl hover:shadow-lg transition flex items-center justify-center gap-2">
             {loading ? "Signing in..." : "Sign In"}
           </button>
-        </form>
+        </form>          <div class="relative my-4">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-white text-gray-500">Or</span>
+            </div>
+          </div>
+          <button
+            onClick={async () => {
+              const demoEmail = "demo@mediverse.com";
+              const demoPassword = "demo123";
+              const success = await login(demoEmail, demoPassword);
+              if (success) router.push("/dashboard");
+              else alert("Demo login failed. Please register first.");
+            }}
+            className="w-full bg-green-600 text-white py-2 rounded-xl flex items-center justify-center gap-2"
+          >
+            🚀 Try Demo (No Registration)
+          </button>
         <p className="text-center text-sm text-gray-600 mt-4">Don't have an account? <Link href="/register" className="text-blue-600 font-semibold">Sign up</Link></p>
       </div>
     </div>
   );
 }
+
 
 
