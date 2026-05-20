@@ -6,7 +6,6 @@ interface User {
   id: string;
   email: string;
   name: string;
-  avatar?: string;
 }
 
 interface AuthContextType {
@@ -14,7 +13,6 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  updateProfile: (data: Partial<User>) => void;
   isLoading: boolean;
 }
 
@@ -61,19 +59,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push("/login");
   };
 
-  const updateProfile = (data: Partial<User>) => {
-    if (!user) return;
-    const updated = { ...user, ...data };
-    setUser(updated);
-    localStorage.setItem("mediverse_current_user", JSON.stringify(updated));
-    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-    if (users[user.email]) {
-      users[user.email] = { ...users[user.email], ...data };
-      localStorage.setItem("mediverse_users", JSON.stringify(users));
-    }
-  };
-
-  return <AuthContext.Provider value={{ user, login, register, logout, updateProfile, isLoading }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

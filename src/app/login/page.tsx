@@ -1,8 +1,11 @@
 ﻿"use client";
 import { useState, useEffect } from "react";
-import { useRouter } "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, LogIn, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+
+export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -10,45 +13,44 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const router = useRouter();
 
-  // Create demo user directly in localStorage
-  const setupDemoUser = () => {
-    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-    if (!users["demo@mediverse.com"]) {
-      users["demo@mediverse.com"] = {
-        id: "demo_" + Date.now(),
-        email: "demo@mediverse.com",
-        name: "Demo User",
-        password: "demo123"
-      };
-      localStorage.setItem("mediverse_users", JSON.stringify(users));
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+      if (!users["demo@mediverse.com"]) {
+        users["demo@mediverse.com"] = {
+          id: "demo123",
+          email: "demo@mediverse.com",
+          name: "Demo User",
+          password: "demo123",
+        };
+        localStorage.setItem("mediverse_users", JSON.stringify(users));
+      }
     }
-    // Also set current user
-    const demoUser = {
-      id: "demo_" + Date.now(),
-      email: "demo@mediverse.com",
-      name: "Demo User"
-    };
-    localStorage.setItem("mediverse_current_user", JSON.stringify(demoUser));
-    // Set a cookie for middleware
-    document.cookie = "mediverse_auth=true; path=/";
-    router.push("/dashboard");
-  };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
-    const userData = users[email];
-    if (userData && userData.password === password) {
-      const { password: _, ...safeUser } = userData;
-      localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
-      document.cookie = "mediverse_auth=true; path=/";
+    const success = await login(email, password);
+    if (success) {
       router.push("/dashboard");
     } else {
       setError("Invalid email or password");
+    }
+    setLoading(false);
+  };
+
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    const success = await login("demo@mediverse.com", "demo123");
+    if (success) {
+      router.push("/dashboard");
+    } else {
+      setError("Demo login failed. Please try again.");
     }
     setLoading(false);
   };
@@ -86,19 +88,12 @@ export default function LoginPage() {
         </form>
 
         <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Or</span>
-          </div>
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300"></div></div>
+          <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div>
         </div>
 
-        <button
-          onClick={setupDemoUser}
-          className="w-full bg-green-600 text-white py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-green-700 transition"
-        >
-          🚀 Try Demo (Instant Access)
+        <button onClick={handleDemoLogin} disabled={loading} className="w-full bg-green-600 text-white py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-green-700 transition">
+          🚀 Try Demo (No Registration)
         </button>
 
         <p className="text-center text-sm text-gray-600 mt-4">
