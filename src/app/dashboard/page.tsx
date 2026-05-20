@@ -8,10 +8,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const stored = localStorage.getItem("mediverse_current_user");
-    if (!stored) {
-      window.location.href = "/login";
-      return;
-    }
+    if (!stored) { window.location.href = "/login"; return; }
     setUser(JSON.parse(stored));
     const hour = new Date().getHours();
     if (hour < 12) setGreeting("Good morning");
@@ -19,10 +16,7 @@ export default function DashboardPage() {
     else setGreeting("Good evening");
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("mediverse_current_user");
-    window.location.href = "/login";
-  };
+  const logout = () => { localStorage.removeItem("mediverse_current_user"); window.location.href = "/login"; };
 
   if (!user) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
@@ -30,10 +24,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 flex justify-between items-center flex-wrap gap-3">
-          <div>
-            <h1 className="text-2xl font-bold">{greeting}, {user.name}! 👋</h1>
-            <p className="text-gray-500">Your health dashboard</p>
-          </div>
+          <div><h1 className="text-2xl font-bold">{greeting}, {user.name}! 👋</h1><p className="text-gray-500">Your health dashboard</p></div>
           <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded-lg">Logout</button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
