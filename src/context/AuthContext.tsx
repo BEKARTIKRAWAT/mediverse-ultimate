@@ -17,52 +17,48 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [supabase, setSupabase] = useState<any>(null);
+  const supabase = createClient();
 
   useEffect(() => {
-    // Initialize supabase client only on client side
-    const client = createClient();
-    setSupabase(client);
-  }, []);
-
-  useEffect(() => {
-    if (!supabase) return;
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
       setIsLoading(false);
     });
     return () => listener?.subscription.unsubscribe();
-  }, [supabase]);
+  }, []);
 
   const login = async (email: string, password: string) => {
-    if (!supabase) return { error: new Error("Supabase not initialized") };
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     return { error };
   };
 
   const register = async (email: string, password: string, name: string) => {
-    if (!supabase) return { error: new Error("Supabase not initialized") };
     const { data, error } = await supabase.auth.signUp({ 
       email, 
       password,
       options: { data: { full_name: name } }
     });
-    if (!error && data.user && supabase) {
+    if (!error && data.user) {
       await supabase.from("profiles").upsert({ id: data.user.id, email, full_name: name });
     }
     return { error };
   };
 
   const logout = async () => {
-    if (!supabase) return;
     await supabase.auth.signOut();
   };
 
   const updateProfile = async (data: { full_name?: string; avatar_url?: string }) => {
-    if (!user || !supabase) return;
+    if (!user) return;
     const updates = { ...data, updated_at: new Date().toISOString() };
-    await supabase.auth.updateUser({ data: { full_name: data.full_name } });
+    // Update user metadata
+    const { error: authError } = await supabase.auth.updateUser({
+      data: { full_name: data.full_name }
+    });
+    if (authError) console.error(authError);
+    // Update profiles table
     await supabase.from("profiles").upsert({ id: user.id, ...updates });
+    // Refresh user object
     const { data: refreshedUser } = await supabase.auth.getUser();
     if (refreshedUser?.user) setUser(refreshedUser.user);
   };
