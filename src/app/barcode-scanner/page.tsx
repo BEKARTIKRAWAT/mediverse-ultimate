@@ -3,10 +3,10 @@ export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Camera, Loader2, X } from "lucide-react";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 
 // Dynamically import the scanner component to avoid SSR issues
-const Scanner = dynamic(
+const Scanner = nextDynamic(
   () => import("@yudiel/react-qr-scanner").then((mod) => mod.Scanner),
   { ssr: false }
 );
@@ -85,6 +85,7 @@ export default function BarcodeScannerPage() {
     </div>
   );
 }
+
 
 
 
