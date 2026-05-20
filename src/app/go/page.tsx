@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useEffect } from "react";
 
 export default function GoToDashboard() {
@@ -26,6 +26,7 @@ export default function GoToDashboard() {
   }, []);
   return <div className="min-h-screen flex items-center justify-center">Redirecting to dashboard...</div>;
 }
+
 
 
 

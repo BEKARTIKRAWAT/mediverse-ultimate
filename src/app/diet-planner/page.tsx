@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { Utensils, Loader2, Apple, Salad, Coffee, Cake, Download } from "lucide-react";
@@ -57,6 +57,7 @@ export default function DietPlanner() {
     </div>
   );
 }
+
 
 
 

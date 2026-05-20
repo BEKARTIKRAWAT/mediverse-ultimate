@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { Download, FileSpreadsheet } from "lucide-react";
 
@@ -38,6 +38,7 @@ export default function DataExport() {
     </div>
   );
 }
+
 
 
 

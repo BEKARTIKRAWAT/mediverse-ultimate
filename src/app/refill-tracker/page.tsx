@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Pill, AlertTriangle, CheckCircle, Calendar, Plus, Trash2, Edit } from "lucide-react";
@@ -105,6 +105,7 @@ export default function RefillTracker() {
     </div>
   );
 }
+
 
 
 

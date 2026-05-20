@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { Dumbbell, Search } from "lucide-react";
@@ -34,6 +34,7 @@ export default function ExerciseLibrary() {
     </div>
   );
 }
+
 
 
 

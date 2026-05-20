@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Activity, Plus, Trash2 } from "lucide-react";
@@ -50,6 +50,7 @@ export default function BMICalculator() {
     </div>
   );
 }
+
 
 
 

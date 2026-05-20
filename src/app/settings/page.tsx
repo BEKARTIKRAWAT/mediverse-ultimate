@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useSettings } from "@/context/SettingsContext";
 import { useState, useEffect } from "react";
@@ -353,6 +353,7 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
 

@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useState } from "react";
 import Link from "next/link";
 import { Mail, Lock, LogIn, Eye, EyeOff } from "lucide-react";
@@ -47,6 +47,7 @@ export default function LoginPage() {
     </div>
   );
 }
+
 
 
 

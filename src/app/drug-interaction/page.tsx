@@ -1,5 +1,5 @@
-﻿export const dynamic = 'force-dynamic';
-"use client";
+﻿"use client";
+export const dynamic = 'force-dynamic';
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Pill, AlertCircle, CheckCircle, Loader2, ExternalLink, Info } from "lucide-react";
@@ -267,6 +267,7 @@ export default function DrugInteractionPage() {
     </div>
   );
 }
+
 
 
 
