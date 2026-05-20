@@ -2,7 +2,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Pill, Plus, Trash2, CheckCircle, Clock } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+
 
 export default function MedicationTracker() {
   const { user } = useAuth();
@@ -38,7 +38,7 @@ export default function MedicationTracker() {
 
   const addMed = async () => {
     if (!newMed.name || !supabase) return;
-    const { error } = await supabase.from("medications").insert({
+    const { error } = await 
       user_id: user.id,
       name: newMed.name,
       dosage: newMed.dosage,
@@ -57,7 +57,7 @@ export default function MedicationTracker() {
 
   const deleteMed = async (id: string) => {
     if (!supabase) return;
-    await supabase.from("medications").delete().eq("id", id);
+    await 
     fetchMeds();
   };
 
@@ -73,7 +73,7 @@ export default function MedicationTracker() {
     } else {
       newTaken = [...(med.taken || []), { date: today, time, taken: true }];
     }
-    await supabase.from("medications").update({ taken: newTaken }).eq("id", medId);
+    await 
     fetchMeds();
   };
 
@@ -114,3 +114,4 @@ export default function MedicationTracker() {
     </div>
   );
 }
+

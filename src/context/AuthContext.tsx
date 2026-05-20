@@ -24,12 +24,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    const stored = localStorage.getItem("mediverse_current_user");
-    if (stored) setUser(JSON.parse(stored));
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("mediverse_current_user");
+      if (stored) setUser(JSON.parse(stored));
+    }
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string) => {
+    if (typeof window === "undefined") return false;
     const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
     const userData = users[email];
     if (userData && userData.password === password) {
@@ -41,7 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false;
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
+  const register = async (name: string, email: string, password: string) => {
+    if (typeof window === "undefined") return false;
     const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
     if (users[email]) return false;
     const newUser = { id: Date.now().toString(), email, name, password };
@@ -54,16 +58,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
+    if (typeof window === "undefined") return;
     setUser(null);
     localStorage.removeItem("mediverse_current_user");
     router.push("/login");
   };
 
-  return (
-    <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
