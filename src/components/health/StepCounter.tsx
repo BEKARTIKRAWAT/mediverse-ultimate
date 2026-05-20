@@ -4,7 +4,7 @@ import { Footprints } from "lucide-react";
 
 export default function StepCounter() {
   const [steps, setSteps] = useState(0);
-  const [permission, setPermission] = false;
+  const [permission, setPermission] = useState(false);
   useEffect(() => {
     if ("DeviceOrientationEvent" in window && typeof (DeviceOrientationEvent as any).requestPermission === "function") {
       (DeviceOrientationEvent as any).requestPermission().then((response: string) => {
