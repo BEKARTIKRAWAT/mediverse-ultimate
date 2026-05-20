@@ -27,7 +27,7 @@ export default function WeeklySummary() {
   };
 
   const openEmail = () => {
-    window.location.href = `mailto:?subject=Mediverse Weekly Health Summary&body=${encodeURIComponent(summary)}`;
+    window.window.location.href = `mailto:?subject=Mediverse Weekly Health Summary&body=${encodeURIComponent(summary)}`;
   };
 
   if (!user) return null;
@@ -45,6 +45,7 @@ export default function WeeklySummary() {
     </div>
   );
 }
+
 
 
 

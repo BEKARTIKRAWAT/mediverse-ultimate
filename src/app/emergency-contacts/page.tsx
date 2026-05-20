@@ -58,7 +58,7 @@ export default function EmergencyContacts() {
   const sendSMS = (phone: string, name: string) => {
     setSending(phone);
     const message = `🚨 EMERGENCY ALERT from ${userDisplayName} (Mediverse). Please check on me immediately.`;
-    window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
+    window.window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
     setTimeout(() => setSending(null), 1000);
   };
 
@@ -112,3 +112,4 @@ export default function EmergencyContacts() {
     </div>
   );
 }
+

@@ -21,7 +21,8 @@ export default function GoToDashboard() {
       name: "Demo User",
     }));
     // Redirect to dashboard
-    window.location.href = "/dashboard";
+    window.window.location.href = "/dashboard";
   }, []);
   return <div className="min-h-screen flex items-center justify-center">Redirecting to dashboard...</div>;
 }
+

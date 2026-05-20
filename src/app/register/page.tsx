@@ -26,7 +26,7 @@ export default function RegisterPage() {
     localStorage.setItem("mediverse_users", JSON.stringify(users));
     const { password: _, ...safeUser } = newUser;
     localStorage.setItem("mediverse_current_user", JSON.stringify(safeUser));
-    window.location.href = "/dashboard";
+    window.window.location.href = "/dashboard";
   };
 
   return (
@@ -46,3 +46,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+
