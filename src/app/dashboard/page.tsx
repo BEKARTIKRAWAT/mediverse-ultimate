@@ -11,12 +11,13 @@ import {
   Shield, Zap, Mail, Stethoscope, FileText, Video, Apple, Lightbulb,
   IdCard, Footprints, Moon, Droplet, BookOpen, Download, Clock, Flame, X
 } from "lucide-react";
-import VoiceAssistant from "@/components/voice/VoiceAssistant";
-import FloatingActionMenu from "@/components/shared/FloatingActionMenu";
+// Agar ye components nahi hain to comment karo – main kaam nahi rokenge
+// import VoiceAssistant from "@/components/voice/VoiceAssistant";
+// import FloatingActionMenu from "@/components/shared/FloatingActionMenu";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-// Animated gradient background (pure CSS)
+// Animated gradient background
 const AnimatedBackground = () => (
   <div className="fixed inset-0 -z-10 overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 animate-gradient-xy"></div>
@@ -144,6 +145,33 @@ const DailyAffirmation = () => {
 export default function MainDashboard() {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
+  
+  // ========== AUTO-CREATE DEMO USER IF NONE EXISTS ==========
+  useEffect(() => {
+    if (!isLoading && !user) {
+      // Create demo user in global users store
+      const users = JSON.parse(localStorage.getItem("mediverse_users") || "{}");
+      if (!users["demo@mediverse.com"]) {
+        users["demo@mediverse.com"] = {
+          id: "demo123",
+          email: "demo@mediverse.com",
+          name: "Demo User",
+          password: "demo123",
+        };
+        localStorage.setItem("mediverse_users", JSON.stringify(users));
+      }
+      // Set as current logged-in user
+      localStorage.setItem("mediverse_current_user", JSON.stringify({
+        id: "demo123",
+        email: "demo@mediverse.com",
+        name: "Demo User",
+      }));
+      // Reload to let AuthContext pick up the user
+      window.location.reload();
+    }
+  }, [user, isLoading]);
+  // ========================================================
+
   const [stats, setStats] = useState({ meds: 0, apts: 0, health: 0 });
   const [weather, setWeather] = useState(null);
   const [adherenceScore, setAdherenceScore] = useState(100);
@@ -153,6 +181,7 @@ export default function MainDashboard() {
   const [streak, setStreak] = useState(0);
   const [healthScore, setHealthScore] = useState(78);
 
+  // Greeting & streak
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour < 12) setGreeting("Good morning");
@@ -175,10 +204,12 @@ export default function MainDashboard() {
     setHealthScore(Math.min(100, Math.max(0, adherenceScore + Math.floor(Math.random() * 20))));
   }, []);
 
+  // Redirect if still no user after demo creation (safety)
   useEffect(() => {
     if (!isLoading && !user) router.push("/login");
   }, [user, isLoading, router]);
 
+  // Load medication, appointment, health counts
   useEffect(() => {
     if (!user) return;
     const meds = JSON.parse(localStorage.getItem(`mediverse_meds_${user.id}`) || "[]");
@@ -194,6 +225,7 @@ export default function MainDashboard() {
     setAdherenceScore(total ? Math.round((taken / total) * 100) : 100);
   }, [user]);
 
+  // Animated counters
   useEffect(() => {
     let step = 0;
     const interval = setInterval(() => {
@@ -205,16 +237,28 @@ export default function MainDashboard() {
       });
       if (step >= 20) clearInterval(interval);
     }, 30);
+    return () => clearInterval(interval);
   }, [stats]);
 
+  // Weather (mock)
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (pos) => {
-        const res = await fetch(`/api/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
-        const data = await res.json();
-        setWeather(data);
-      }, () => fetch('/api/weather').then(r => r.json()).then(setWeather));
-    } else fetch('/api/weather').then(r => r.json()).then(setWeather);
+        try {
+          const res = await fetch(`/api/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+          const data = await res.json();
+          setWeather(data);
+        } catch {
+          const res = await fetch('/api/weather');
+          setWeather(await res.json());
+        }
+      }, async () => {
+        const res = await fetch('/api/weather');
+        setWeather(await res.json());
+      });
+    } else {
+      fetch('/api/weather').then(r => r.json()).then(setWeather);
+    }
   }, []);
 
   if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div></div>;
@@ -357,8 +401,9 @@ export default function MainDashboard() {
           </div>
         </main>
       </div>
-      <FloatingActionMenu />
-      <VoiceAssistant />
+      {/* Agar FloatingActionMenu aur VoiceAssistant components nahi hain to comment karo */}
+      {/* <FloatingActionMenu /> */}
+      {/* <VoiceAssistant /> */}
     </>
   );
 }
