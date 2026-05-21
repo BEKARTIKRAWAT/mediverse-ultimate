@@ -1,4 +1,5 @@
-﻿"use client";
+﻿
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Pill, Plus, Trash2, CheckCircle, Clock } from "lucide-react";

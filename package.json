@@ -27,7 +27,7 @@
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "eventsource": "^4.1.0",
-        "framer-motion": "^12.38.0",
+        "framer-motion": "^12.40.0",
         "groq-sdk": "^1.2.0",
         "idb": "^8.0.3",
         "jotai": "^2.20.0",
